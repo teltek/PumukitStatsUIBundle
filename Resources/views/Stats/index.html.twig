@@ -1,56 +1,124 @@
 {% extends 'PumukitNewAdminBundle::layout.html.twig' %}
 
 {% block stylesheets %}
-  {{ parent() }}
-  <link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
-  <link href="{{ asset('bundles/pumukitstatsui/css/statsui.css') }}" rel="stylesheet">
+    {{ parent() }}
+    {#<link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/pumukitstatsui/css/statsui.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <style>
+        .block-results-views {
+            background-color:#008846;
+            margin-top:20px;
+            height:80px;
+            color:white;
+            box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+        }
+
+        .block-results-objects {
+            background-color:#de3601;
+            margin-top:20px;
+            height:80px;
+            color:white;
+            box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+        }
+
+        .block-results-views i, .block-results-objects i {
+            padding-top:10px;
+            opacity: 0.2;
+            filter: alpha(opacity=20);
+            font-size:60px;
+        }
+
+        .block-search-and-views {
+            margin-top:10px;
+        }
+
+        .block-preview {
+            margin-top:30px;
+            background-color: white;
+            height:550px;
+            box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+        }
+
+        .btn-stats-search {
+            padding: 8px 10px;
+        }
+
+        .form_daterangepicker {
+            border:none;
+        }
+
+        .table-views {
+            margin-bottom: 0px;
+        }
+
+        .table-views thead, .table-views tbody, .table-views tr, .table-views td, .table-views th { display: block; }
+
+        .table-views tr:after {
+            content: ' ';
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+
+        .table-views thead th {
+            height: 30px;
+
+            /*text-align: left;*/
+        }
+
+        .table-views tbody {
+            height: 340px;
+            overflow-y: auto;
+        }
+
+        .table-views tbody td, .table-views thead th {
+            width: 19.2%;
+            float: left;
+        }
+
+    </style>
+
+
 {% endblock %}
 
 {% block javascripts %}
-  <script type="text/javascript">
-  window.pmk = {};
-  window.pmk.template = "{{ asset('bundles/pumukitstatsui/templates/') }}";
-  </script>
-  {{ parent() }}
-  {% if app.environment == "prod" %}
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/d3/d3.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/moment/min/moment.min.js') }}"></script>
-  <!-- <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.js') }}"></script> -->
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/custom-vendor/daterangepicker.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angular/angular.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angular-route/angular-route.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angular-nvd3/dist/angular-nvd3.min.js') }}"></script>
-  <!-- <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/ng-bs-daterangepicker/dist/ng-bs-daterangepicker.min.js') }}"></script> -->
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/custom-vendor/ng-bs-daterangepicker.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angu-fixed-header-table/angu-fixed-header-table.js') }}"></script>
-  {% else %}
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/d3/d3.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/moment/moment.js') }}"></script>
-  <!-- <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.js') }}"></script> -->
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/custom-vendor/daterangepicker.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angular/angular.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angular-route/angular-route.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angular-nvd3/dist/angular-nvd3.js') }}"></script>
-  <!-- <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js') }}"></script> -->
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/custom-vendor/ng-bs-daterangepicker.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/angu-fixed-header-table/angu-fixed-header-table.js') }}"></script>
-  {% endif %} 
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/js/app.js') }}"></script> 
-  {% if app.environment == "prod" %}
-  <script type="text/javascript">
-  angular.module('app').config(['$compileProvider', function ($compileProvider) {
-      $compileProvider.debugInfoEnabled(false);
-  }]);
-  </script>
-  {% endif %}
-  <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/js/controller.js') }}"></script> 
+    {{ parent() }}
+    {#<script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/d3/d3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.js') }}"></script>#}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 {% endblock %}
 
 {% block body %}
-<div ng-app="app" ng-view></div>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{% trans %}General Statistics for Series{% endtrans %}</h1>
+            </div>
+        </div>
+
+        <div class="row block-search-and-views">
+            {% include "PumukitStatsUIBundle:Search:index.html.twig" %}
+        </div>
+
+        <div class="row block-stats-most-viewed">
+            {% include "PumukitStatsUIBundle:MostViewed:index.html.twig" %}
+        </div>
+
+        <div class="row block-preview">
+            {% include "PumukitStatsUIBundle:Views:index.html.twig" %}
+        </div>
+
+    </div>
+
+    {% include "PumukitStatsUIBundle:Stats:js.html.twig" %}
+
 {% endblock %}
 
 

@@ -21,8 +21,13 @@ class StatsController extends Controller
      * @Route("/series/{id}", name="pumukit_stats_series_index_id")
      * @Route("/objects/{id}", name="pumukit_stats_mmobj_index_id")
      * @Template
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request)
     {
+        return array();
     }
 }

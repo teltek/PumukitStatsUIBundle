@@ -1,0 +1,272 @@
+<script type="text/javascript">
+
+    $(function() {
+        $('input[name="datefilter"]').daterangepicker({
+            "minYear": 1970,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment()]
+            },
+            "locale": {
+                "format": "YYYY/MM/DD"
+            },
+            "alwaysShowCalendars": true,
+            "startDate": moment().startOf('month'),
+            "endDate": moment().endOf('month')
+        });
+
+        {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
+            window.most_viewed_series(null,null,0);
+            window.views(null,null,0);
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
+            window.most_viewed_mmojb(null,null,0);
+            window.views(null,null,0);
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
+        {% endif %}
+
+    });
+
+    $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+    });
+    $('input[name="datefilter"]').on('cancel.daterangepicker', function() {
+        $(this).val('');
+    });
+
+    $('.btn-stats-calendar').on('click', function(event) {
+        event.preventDefault();
+        $('input[name="datefilter"]').click();
+    });
+
+    $('.btn-stats-calendar-remove').on('click', function(event){
+        event.preventDefault();
+        $('#form_daterangepicker').val('');
+    });
+
+    $('.btn-stats-search-remove').on('click', function(event){
+        event.preventDefault();
+        $('#title').val('');
+    });
+
+    $('.ripple-wrapper').on('click', function(event) {
+        event.preventDefault();
+        $('#form_daterangepicker').val('');
+        $('#title').val('');
+    });
+
+    $('.applyBtn').on('click', function(event) {
+        event.preventDefault();
+        /* AJAX to load data */
+    });
+
+    window.most_viewed_series = function(from_date, to_date, page) {
+
+        if(from_date == null && to_date == null) {
+            var from_date = moment().startOf('year').format('YYYY-MM-DD');
+            var to_date = moment().endOf('month').format('YYYY-MM-DD');
+            var page = 0;
+        }
+
+        $.ajax({
+            url: '{{ path('pumukit_stats_api_seriesmostviewed') }}',
+            type: 'GET',
+            data: {
+                from_date: from_date,
+                to_date: to_date,
+                page: page,
+                limit:10
+            },
+            success: function(response) {
+                var series = response.series;
+                var i = 1;
+                var locale = "{{ app.request.getLocale() }}";
+                var path = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
+                $('.total-objects').html(response.total);
+                series.forEach(function(data) {
+                    $('.most-viewed-table-body').append(
+                        "<tr>" +
+                        "<td headers='ranking'>" + i + "</td>" +
+                        "<td headers='title'>" +
+                        "<a href='" + path.replace('__ID__', data.series.id) + "'>" +
+                        data.series.title[locale] +
+                        "</a>" +
+                        "</td>" +
+                        "<td headers='videos'>" +  + "</td>" +
+                        "<td headers='views'>" + data.num_viewed + "</td>" +
+                        "</tr>"
+                    );
+                    i = i + 1;
+                });
+
+                //window.initializeChartMostViewed(response.series);
+            }
+        });
+    };
+
+    window.most_viewed_mmojb = function(from_date, to_date, page) {
+
+        if(from_date == null && to_date == null) {
+            var from_date = moment().startOf('year').format('YYYY-MM-DD');
+            var to_date = moment().endOf('month').format('YYYY-MM-DD');
+            var page = 0;
+        }
+
+        $.ajax({
+            url: '{{ path('pumukit_stats_api_mmobjmostviewed') }}',
+            type: 'GET',
+            data: {
+                from_date: from_date,
+                to_date: to_date,
+                page: page,
+                limit:10
+            },
+            success: function(response) {
+                var mmobjs = response.mmobjs;
+                var i = 1;
+                var locale = "{{ app.request.getLocale() }}";
+                var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
+                var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
+                $('.total-objects').html(response.total);
+                mmobjs.forEach(function(data) {
+                    $('.most-viewed-table-body').append(
+                        "<tr>" +
+                        "<td headers='ranking'>" + i + "</td>" +
+                        "<td headers='title'>" +
+                        "<a href='" + path.replace('__ID__', data.mmobj.id) + "'>" +
+                        data.mmobj.title[locale] +
+                        "</a>" +
+                        "</td>" +
+                        "<td headers='recording'>" +  + "</td>" +
+                        "<td headers='series'>" +
+                        "<a href='" + url.replace('__ID__', data.series.id) + "'>" +
+                        data.series.title[locale] +
+                        "</a>" +
+                        "</td>" +
+                        "<td headers='views'>" + data.num_viewed + "</td>" +
+                        "</tr>"
+                    );
+                    i = i + 1;
+                });
+
+                //window.initializeChartMostViewed(response.series);
+            }
+        });
+    };
+
+    window.views = function(from_date, to_date, page) {
+
+        if(from_date == null && to_date == null) {
+            var from_date = moment().startOf('year').format('YYYY-MM-DD');
+            var to_date = moment().endOf('month').format('YYYY-MM-DD');
+            var page = 0;
+        }
+
+        $.ajax({
+            url: '{{ path('pumukit_stats_api_views') }}',
+            type: 'GET',
+            data: {
+                from_date: from_date,
+                to_date: to_date,
+                page: page,
+                limit:10
+            },
+            success: function(response){
+                var objects = response.views;
+                var total = 0;
+                objects.forEach(function(data) {
+                    total = total + data.numView;
+                    $('.views-table-body').append(
+                        "<tr>" +
+                        "<td headers='date' style='width:50%'>" + moment(data._id).format('MMMM YYYY') + "</td>" +
+                        "<td headers='views' class='text-right' style='width:50%; '>" + data.numView + "</td>" +
+                        "</tr>"
+                    );
+                });
+                $('.total-views-objects').html(total);
+                $('#foot-views').html(total);
+
+                //window.initializeChartAllViews(response.views);
+
+            }
+        });
+    };
+
+    /*window.initializeChartMostViewed = function(data) {
+        nv.addGraph(function(data) {
+            var chart = nv.models.multiBarHorizontalChart()
+                .x(function(d) { return d.label })
+                .y(function(d) { return d.value })
+                .margin({top: 30, right: 20, bottom: 50, left: 175})
+                .showValues(true)
+                .tooltips(false)
+                .showControls(false);
+
+            chart.yAxis
+                .tickFormat(d3.format(',.2f'));
+
+            d3.select('#chart-all-views svg')
+                .datum(data)
+                .transition().duration(500)
+                .call(chart);
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+        });
+    };
+
+    window.initializeChartAllViews = function(data) {
+        var new_data = [
+            {
+                'key' : '',
+                'color': '#ED6D00',
+                'values': data
+            }
+        ];
+        nv.addGraph(function(new_data) {
+            var chart = nv.models.linePlusBarChart()
+                .margin({top: 30, right: 60, bottom: 50, left: 70})
+                .x(function(d,i) { return i })
+                .y(function(d) { return d[1] })
+                .color(d3.scale.category10().range())
+            ;
+
+            chart.xAxis
+                .showMaxMin(false)
+                .tickFormat(function(d) {
+                    var dx = data[0].values[d] && data[0].values[d][0] || 0;
+                    return d3.time.format('%x')(new Date(dx))
+                });
+
+            chart.y1Axis
+                .tickFormat(d3.format(',f'));
+
+            chart.y2Axis
+                .tickFormat(function(d) { return '$' + d3.format(',f')(d) });
+
+            chart.bars.forceY([0]);
+
+            d3.select('#chart-all-views svg')
+                .datum(data)
+                .transition().duration(500)
+                .call(chart)
+            ;
+
+            nv.utils.windowResize(chart.update);
+
+            return chart;
+        });
+    };*/
+</script>
