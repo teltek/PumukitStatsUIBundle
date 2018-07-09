@@ -1,8 +1,10 @@
 <script type="text/javascript">
     "use strict";
-    $(function() {
 
-        $('input[name="datefilter"]').daterangepicker({
+    var inputDatePicker = $('input[name="datefilter"]');
+
+    $(function() {
+        inputDatePicker.daterangepicker({
             "minYear": 1970,
             ranges: {
                 'Today': [moment(), moment()],
@@ -24,10 +26,10 @@
         window.initializeAjaxRequest();
     });
 
-    $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+    inputDatePicker.on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
     });
-    $('input[name="datefilter"]').on('cancel.daterangepicker', function() {
+    inputDatePicker.on('cancel.daterangepicker', function() {
         $(this).val('');
     });
 
@@ -93,7 +95,7 @@
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
             var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
             window.most_viewed_mmobj_by_id(mmobj, null, null, 0);
-            //window.views_mmobj(mmobj, null, null, 0);
+            window.views_mmobj(mmobj, null, null, 0);
         {% endif %}
     };
 
@@ -103,13 +105,11 @@
         var from_date = dates[0].trim().replace(/\//g, "-");
         var to_date = dates[1].trim().replace(/\//g, "-");
 
-        var data = {
+        return {
             'criteria': criteria,
             'from_date': from_date,
             'to_date': to_date
         };
-
-        return data;
     };
 
     window.most_viewed_series = function(criteria, from_date, to_date, page) {
@@ -147,7 +147,7 @@
                         data.series.title[locale] +
                         "</a>" +
                         "</td>" +
-                        "<td headers='videos' id='" +  data.series.id+"'>" + 0 + "</td>" +
+                        "<td headers='videos' id='" +  data.series.id +"'>" + 0 + "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
                         "</tr>"
                     );
@@ -193,12 +193,13 @@
                     total = total + element.numView;
                 });
                 $('#'+mmobj).html(total);
+                $('.total-views-objects').html(total);
             }
         });
     };
 
     window.most_viewed_series_by_id = function(series, from_date, to_date, page) {
-        if(from_date == null && to_date == null) {
+        if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
@@ -296,7 +297,7 @@
     };
 
     window.views_series = function(series, from_date, to_date, page) {
-        if(from_date == null && to_date == null) {
+        if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
@@ -312,6 +313,44 @@
                 page: page,
                 limit:10,
                 series: series,
+                group_by: 'month'
+            },
+            success: function(response) {
+                var objects = response.views;
+                var total = 1;
+                objects.forEach(function(data) {
+                    total = total + data.numView;
+                    $('.views-table-body').append(
+                        "<tr>" +
+                        "<td headers='date' style='width:50%'>" + moment(data._id).format('MMMM YYYY') + "</td>" +
+                        "<td headers='views' class='text-right' style='width:50%;'>" + data.numView + "</td>" +
+                        "</tr>"
+                    );
+                });
+                $('.total-views-objects').html(total);
+                $('#foot-views').html(total);
+
+            }
+        });
+    };
+
+    window.views_mmobj = function(mmobj, from_date, to_date, page) {
+        if(from_date == null || to_date == null) {
+            var data = window.defaultAjaxValues();
+            from_date = data['from_date'];
+            to_date = data['to_date'];
+            page = data['page'];
+        }
+
+        $.ajax({
+            url: '{{ path('pumukit_stats_api_viewsmmobj') }}',
+            type: 'GET',
+            data: {
+                from_date: from_date,
+                to_date: to_date,
+                page: page,
+                limit:10,
+                mmobj: mmobj,
                 group_by: 'month'
             },
             success: function(response) {
@@ -430,8 +469,8 @@
                     "' target='_blank'>" +
                     "<div class='pumukit_mmobj'>"  +
                     "<div class='thumbnail'>" +
-                    "<span class='play_icon' alt=''></span>" +
-                    "<img alt='serial_pic' class='serial thumbnailimg' " +
+                    "<span class='play_icon'></span>" +
+                    "<img title='serial_pic' class='serial thumbnailimg' " +
                     "src=" + mmobj.pics[0].url  + " /> " +
                     "<div class='thumbnailholder'></div></div>" +
                     "<div class='info-wrapper'>" +
@@ -449,6 +488,10 @@
         );
 
     };
+
+    window.createPager = function() {
+        // Create paginator;
+    }
 
     /*window.initializeChartMostViewed = function(data) {
         nv.addGraph(function(data) {
