@@ -13,17 +13,19 @@
 </div>
 <div class="clearfix"></div>
 
-<div class="col-md-7 block-results-objects">
-    <div class="row">
-        <div class="col-md-4">
-            <h2 class="total-objects"></h2>
-        </div>
-        <div class="col-md-6">
-            <h4>Total Objects </h4>
-        </div>
-        <div class="col-md-2 pull-right">
-            <i class="ion ion-stats-bars mdi-av-equalizer"></i>
+{% if app.request.get('_route') != 'pumukit_stats_mmobj_index_id' %}
+    <div class="col-md-7 block-results-objects">
+        <div class="row">
+            <div class="col-md-4">
+                <h2 class="total-objects"></h2>
+            </div>
+            <div class="col-md-6">
+                <h4>Total Objects </h4>
+            </div>
+            <div class="col-md-2 pull-right">
+                <i class="ion ion-stats-bars mdi-av-equalizer"></i>
+            </div>
         </div>
     </div>
-</div>
-<div class="clearfix"></div>
+    <div class="clearfix"></div>
+{% endif %}

@@ -28,6 +28,18 @@ class StatsController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return array();
+        $routeName = $request->get('_route');
+        $translator = $this->get('translator');
+
+        if($routeName == 'pumukit_stats_series_index') {
+            $title = 'General Statistics for Series';
+        } elseif($routeName == 'pumukit_stats_mmobj_index') {
+            $title = 'General Statistics for Objects (videos/audios)';
+        } elseif($routeName == 'pumukit_stats_series_index_id') {
+            $title = 'Statistics of the series';
+        } else {
+            $title = 'Statistics of the object';
+        }
+        return array('template_title' => $translator->trans($title));
     }
 }

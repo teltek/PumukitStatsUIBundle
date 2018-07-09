@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {#<link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('bundles/pumukitwebtv/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" media="screen"/>
     <link href="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/pumukitstatsui/css/statsui.css') }}" rel="stylesheet">
 
@@ -88,7 +89,9 @@
 {% block javascripts %}
     {{ parent() }}
     {#<script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/d3/d3.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.js') }}"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 {% endblock %}
@@ -99,7 +102,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h1>{% trans %}General Statistics for Series{% endtrans %}</h1>
+                <h1>{{ template_title }}</h1>
             </div>
         </div>
 
