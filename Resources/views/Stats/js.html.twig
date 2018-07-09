@@ -29,13 +29,14 @@
     inputDatePicker.on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
     });
+
     inputDatePicker.on('cancel.daterangepicker', function() {
         $(this).val('');
     });
 
     $('.btn-stats-calendar').on('click', function(event) {
         event.preventDefault();
-        $('input[name="datefilter"]').click();
+        inputDatePicker.click();
     });
 
     $('.btn-stats-calendar-remove').on('click', function(event){
@@ -82,7 +83,7 @@
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
-            window.most_viewed_mmojb(null,null,0);
+            window.most_viewed_mmobj(null,null,0);
             window.views(null,null,0);
         {% endif %}
 
@@ -155,6 +156,7 @@
                     i = i + 1;
                 });
 
+                window.createPager(response);
                 //window.initializeChartMostViewed(response.series);
             }
         });
@@ -242,6 +244,7 @@
                     i = i + 1;
                 });
 
+                window.createPager(response);
                 //window.initializeChartMostViewed(response.series);
             }
         });
@@ -372,7 +375,7 @@
         });
     };
 
-    window.most_viewed_mmojb = function(from_date, to_date, page) {
+    window.most_viewed_mmobj = function(from_date, to_date, page) {
         if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
@@ -417,6 +420,7 @@
                     i = i + 1;
                 });
 
+                window.createPager(response);
                 //window.initializeChartMostViewed(response.series);
             }
         });
@@ -479,7 +483,7 @@
                     "<span class='mmobj_thumbnail_title'>" + mmobj.title[locale] + "</span>" +
                     "</div>" +
                     "<div class='subtitle'>" +
-                    "<abbr title='Prueba Teltek'>"+ mmobj.subtitle[locale] +"</abbr>" +
+                    "<abbr title='" + mmobj.subtitle[locale] + "'>"+ mmobj.subtitle[locale] +"</abbr>" +
                     "</div>" +
                     "<div class='date mmobj'>" +
                         moment(mmobj.record_date).format('YYYY-MM-DD HH:mm:ss') +
@@ -489,8 +493,17 @@
 
     };
 
-    window.createPager = function() {
-        // Create paginator;
+    window.createPager = function(data) {
+        var total = data.total % 10;
+        var count = data.total / 10;
+        var pages = 0;
+        if(total != 0) {
+            pages = parseInt(count) + 1;
+        } else {
+            pages = parseInt(count);
+        }
+
+        var pager = "";
     }
 
     /*window.initializeChartMostViewed = function(data) {
