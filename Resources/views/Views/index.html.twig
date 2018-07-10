@@ -7,8 +7,19 @@
             {% include "PumukitStatsUIBundle:Views:list.html.twig" %}
         </div>
         <div class="col-md-6">
-            <div id="chart-all-views">
-                <svg style="height:400px"></svg>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group pull-right" role="group">
+                        <button type="button" class="btn btn-default">{% trans %}Day{% endtrans %}</button>
+                        <button type="button" class="btn btn-default active-button">{% trans %}Month{% endtrans %}</button>
+                        <button type="button" class="btn btn-default">{% trans %}Year{% endtrans %}</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div id="chart-all-views">
+                        <svg style="height:400px"></svg>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

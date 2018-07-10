@@ -167,7 +167,7 @@
         data.forEach(function(element) {
             values.push({'label': element.series.title[locale], 'value': element.num_viewed });
         });
-        return [{'values': values}];
+        return [{'key' : '', 'color': '#ED6D00', 'values': values}];
     };
 
     window.prepareDataMostViewedMmobj = function(data) {
@@ -175,7 +175,7 @@
         data.forEach(function(element) {
             values.push({'label': element.mmobj.title[locale], 'value': element.num_viewed });
         });
-        return [{'values': values}];
+        return [{'key' : '', 'color': '#ED6D00','values': values}];
     };
 
     window.getInfoSeries = function(series, from_date, to_date) {
@@ -386,7 +386,7 @@
                 });
                 $('.total-views-objects').html(total);
                 $('#foot-views').html(total);
-                
+
                 data = window.prepareDataForAllViews(response.views);
                 window.initializeChartAllViews(data);
             }
@@ -484,7 +484,7 @@
     window.prepareDataForAllViews = function(data) {
         var values = [];
         data.forEach(function(element) {
-            var timestamp = moment(element['_id'],'YYYY MM').valueOf();
+            var timestamp = moment(element['_id']).format('YYYY').valueOf();
             values.push([
                 timestamp,
                 element.numView
@@ -526,6 +526,7 @@
 
     };
 
+    /* Pager for most viewed series/mmobjs */
     window.createPager = function(data) {
         var total = data.total % 10;
         var count = data.total / 10;
@@ -539,6 +540,8 @@
         var pager = "";
     };
 
+
+    /* Charts of views functions */
     window.initializeChartMostViewed = function(data) {
 
         nv.addGraph(function() {
