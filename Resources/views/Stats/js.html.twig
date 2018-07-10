@@ -134,7 +134,6 @@
             success: function(response) {
                 var series = response.series;
                 var i = 1;
-                var locale = "{{ app.request.getLocale() }}";
                 var path = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
                 if(criteria != null) {
@@ -240,7 +239,6 @@
             success: function(response) {
                 var mmobjs = response.mmobjs;
                 var i = 1;
-                var locale = "{{ app.request.getLocale() }}";
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
 
                 $('.total-objects').html(response.total);
@@ -290,7 +288,6 @@
             success: function (response) {
                 var mmobj = response.mmobjs;
                 var i = 1;
-                var locale = "{{ app.request.getLocale() }}";
                 var id = "{{ app.request.attributes.get('id') }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
 
@@ -350,6 +347,8 @@
                 $('.total-views-objects').html(total);
                 $('#foot-views').html(total);
 
+                data = window.prepareDataForAllViews(response.views);
+                window.initializeChartAllViews(data);
             }
         });
     };
@@ -387,7 +386,9 @@
                 });
                 $('.total-views-objects').html(total);
                 $('#foot-views').html(total);
-
+                
+                data = window.prepareDataForAllViews(response.views);
+                window.initializeChartAllViews(data);
             }
         });
     };
@@ -412,7 +413,6 @@
             success: function(response) {
                 var mmobjs = response.mmobjs;
                 var i = 1;
-                var locale = "{{ app.request.getLocale() }}";
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
@@ -475,15 +475,31 @@
                 $('.total-views-objects').html(total);
                 $('#foot-views').html(total);
 
-                //window.initializeChartAllViews(response.views);
-
+                data = window.prepareDataForAllViews(response.views);
+                window.initializeChartAllViews(data);
             }
         });
     };
 
+    window.prepareDataForAllViews = function(data) {
+        var values = [];
+        data.forEach(function(element) {
+            var timestamp = moment(element['_id'],'YYYY MM').valueOf();
+            values.push([
+                timestamp,
+                element.numView
+            ]);
+        });
+
+        return [{
+            "key" : "Quantity",
+            "bar": true,
+            "values" : values
+        }];
+    };
+
     window.showMmobj = function(mmobj) {
         var url = "{{ path('pumukit_webtv_multimediaobject_index', {'id' : '__ID__' }) }}";
-        var locale = "{{ app.request.getLocale() }}";
         $('#chart-most-viewed').html(
                     "<a href='" +
                     url.replace('__ID__', mmobj._id) +
@@ -521,7 +537,7 @@
         }
 
         var pager = "";
-    }
+    };
 
     window.initializeChartMostViewed = function(data) {
 
@@ -547,26 +563,7 @@
         });
     };
 
-    /*window.initializeChartAllViews = function(data) {
-
-        var new_data = [];
-        data.forEach(function(element) {
-            var timestamp = moment(element['_id'],'YYYY MM').valueOf();
-            new_data.push([
-                timestamp,
-                element.numView
-            ]);
-        });
-
-        console.log(new_data);
-        var new_data2 = [
-            {
-                "key" : "Quantity",
-                "bar": true,
-                "values" : new_data
-            }
-        ];
-        console.log(new_data2);
+    window.initializeChartAllViews = function(data) {
 
         nv.addGraph(function() {
             var chart = nv.models.linePlusBarChart()
@@ -592,7 +589,7 @@
             chart.bars.forceY([0]);
 
             d3.select('#chart-all-views svg')
-                .datum(new_data2)
+                .datum(data)
                 .transition().duration(500)
                 .call(chart)
             ;
@@ -601,5 +598,5 @@
 
             return chart;
         });
-    };*/
+    };
 </script>
