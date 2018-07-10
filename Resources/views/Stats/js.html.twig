@@ -110,9 +110,11 @@
         {% endif %}
     });
 
-    /*inputDatePicker.on('change', function(e        var data = window.prepareSearch();
-        window.getAjaxRequest(data);
-    });*/
+    inputDatePicker.on('change', function(event) {
+        event.preventDefault();
+        var data = window.prepareSearch();
+        window.getAjaxRequest(data, 'month');
+    });
 
     window.defaultAjaxValues = function() {
         return {
@@ -165,13 +167,13 @@
 
         {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
             var series = "{{ app.request.attributes.get('_route_params')['id'] }}";
-            window.most_viewed_series_by_id(series, null, null, page);
+            window.most_viewed_series_by_id(series,null, null, null, page);
             window.views_series(series,null, null,null, page, 'month');
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
             var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
-            window.most_viewed_mmobj_by_id(mmobj, null, null, page);
+            window.most_viewed_mmobj_by_id(mmobj, null, null, null, page);
             window.views_mmobj(mmobj,null, null, null, page, 'month');
         {% endif %}
     };
@@ -295,7 +297,7 @@
         });
     };
 
-    window.most_viewed_series_by_id = function(series, from_date, to_date, page) {
+    window.most_viewed_series_by_id = function(series, criteria, from_date, to_date, page) {
         if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
