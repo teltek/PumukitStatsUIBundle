@@ -2,6 +2,7 @@
     "use strict";
 
     var inputDatePicker = $('input[name="datefilter"]');
+    var locale = "{{ app.request.getLocale() }}";
 
     $(function() {
         inputDatePicker.daterangepicker({
@@ -156,10 +157,26 @@
                     i = i + 1;
                 });
 
-                window.createPager(response);
-                //window.initializeChartMostViewed(response.series);
+                data = window.prepareDataMostViewedSeries(response.series);
+                window.initializeChartMostViewed(data);
             }
         });
+    };
+
+    window.prepareDataMostViewedSeries = function(data) {
+        var values = [];
+        data.forEach(function(element) {
+            values.push({'label': element.series.title[locale], 'value': element.num_viewed });
+        });
+        return [{'values': values}];
+    };
+
+    window.prepareDataMostViewedMmobj = function(data) {
+        var values = [];
+        data.forEach(function(element) {
+            values.push({'label': element.mmobj.title[locale], 'value': element.num_viewed });
+        });
+        return [{'values': values}];
     };
 
     window.getInfoSeries = function(series, from_date, to_date) {
@@ -244,8 +261,8 @@
                     i = i + 1;
                 });
 
-                window.createPager(response);
-                //window.initializeChartMostViewed(response.series);
+                data = window.prepareDataMostViewedMmobj(response.mmobjs);
+                window.initializeChartMostViewed(data);
             }
         });
     };
@@ -420,8 +437,8 @@
                     i = i + 1;
                 });
 
-                window.createPager(response);
-                //window.initializeChartMostViewed(response.series);
+                data = window.prepareDataMostViewedMmobj(response.mmobjs);
+                window.initializeChartMostViewed(data);
             }
         });
     };
@@ -506,20 +523,20 @@
         var pager = "";
     }
 
-    /*window.initializeChartMostViewed = function(data) {
-        nv.addGraph(function(data) {
+    window.initializeChartMostViewed = function(data) {
+
+        nv.addGraph(function() {
             var chart = nv.models.multiBarHorizontalChart()
                 .x(function(d) { return d.label })
                 .y(function(d) { return d.value })
                 .margin({top: 30, right: 20, bottom: 50, left: 175})
                 .showValues(true)
-                .tooltips(false)
                 .showControls(false);
 
             chart.yAxis
                 .tickFormat(d3.format(',.2f'));
 
-            d3.select('#chart-all-views svg')
+            d3.select('#chart-most-viewed svg')
                 .datum(data)
                 .transition().duration(500)
                 .call(chart);
@@ -528,7 +545,7 @@
 
             return chart;
         });
-    };*/
+    };
 
     /*window.initializeChartAllViews = function(data) {
 

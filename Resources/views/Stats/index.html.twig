@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {#<link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/pumukitstatsui/css/statsui.css') }}" rel="stylesheet">
 
@@ -39,7 +39,7 @@
         .block-preview {
             margin-top:30px;
             background-color: white;
-            height:550px;
+            height: auto !important;
             box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
         }
 
