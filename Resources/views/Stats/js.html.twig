@@ -4,6 +4,9 @@
     var inputDatePicker = $('input[name="datefilter"]');
     var locale = "{{ app.request.getLocale() }}";
     var page = "{{ app.request.get('page')|default(0) }}";
+    $('.day').removeClass('active-button');
+    $('.month').addClass('active-button');
+    $('.year').removeClass('active-button');
 
     $(function() {
         inputDatePicker.daterangepicker({
@@ -25,6 +28,7 @@
             "endDate": moment().endOf('month').format('YYYY-MM-DD')
         });
 
+        /* No used because event on change on datepicker will be execute */
         //window.initializeAjaxRequest();
     });
 
@@ -87,9 +91,10 @@
         window.getAjaxRequest(data, group_by);
     });
 
-    $('.change_page').on('click', function(event) {
+    $('.most-viewed-paginator').on('click', '.change_page', function(event) {
         event.preventDefault();
 
+        var data = window.prepareSearch();
         var page_selected = $(this).data('value');
         {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
         window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page_selected);
