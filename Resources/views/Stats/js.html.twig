@@ -3,6 +3,7 @@
 
     var inputDatePicker = $('input[name="datefilter"]');
     var locale = "{{ app.request.getLocale() }}";
+    var page = "{{ app.request.get('page')|default(0) }}";
 
     $(function() {
         inputDatePicker.daterangepicker({
@@ -20,11 +21,11 @@
                 "format": "YYYY/MM/DD"
             },
             "alwaysShowCalendars": true,
-            "startDate": moment().startOf('month'),
-            "endDate": moment().endOf('month')
+            "startDate": moment().startOf('year').format('YYYY-MM-DD'),
+            "endDate": moment().endOf('month').format('YYYY-MM-DD')
         });
 
-        window.initializeAjaxRequest();
+        //window.initializeAjaxRequest();
     });
 
     inputDatePicker.on('apply.daterangepicker', function(ev, picker) {
@@ -48,56 +49,130 @@
     $('.btn-stats-search-remove').on('click', function(event){
         event.preventDefault();
         $('#title').val('');
+        var data = window.prepareSearch();
+        window.getAjaxRequest(data);
+    });
+
+    $('.btn-reset-filter').on('click',function(event) {
+        event.preventDefault();
+        $('#title').val('');
+        window.initializeAjaxRequest();
     });
 
     $('.ripple-wrapper').on('click', function(event) {
         event.preventDefault();
         $('#form_daterangepicker').val('');
         $('#title').val('');
+        var data = window.prepareSearch();
+        window.getAjaxRequest(data);
     });
 
-    /*$('.applyBtn').on('click', function(event) {
+    $('.btn-stats-search-text').on('click', function(event) {
         event.preventDefault();
         var data = window.prepareSearch();
+        window.getAjaxRequest(data);
     });
 
-    $('.btn-stats-search').on('click', function(event) {
+    $('.btn-all-views-group').on('click', function(event) {
         event.preventDefault();
 
-        var data = window.prepareSearch();
+        $('.day').removeClass('active-button');
+        $('.month').removeClass('active-button');
+        $('.year').removeClass('active-button');
 
-        window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], 0);
+        $('.'+$(this).data('group')).addClass('active-button');
+
+        var group_by = $(this).data('group');
+        var data = window.prepareSearch();
+        window.getAjaxRequest(data, group_by);
+    });
+
+    $('.change_page').on('click', function(event) {
+        event.preventDefault();
+
+        var page_selected = $(this).data('value');
+        {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
+        window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page_selected);
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
+        window.most_viewed_mmobj(data['criteria'], data['from_date'], data['to_date'],page_selected);
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
+        var series = "{{ app.request.attributes.get('_route_params')['id'] }}";
+        window.most_viewed_series_by_id(series, data['criteria'], data['from_date'], data['to_date'], page_selected);
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
+        var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
+        window.most_viewed_mmobj_by_id(mmobj, data['criteria'], data['from_date'], data['to_date'], page_selected);
+        {% endif %}
+    });
+
+    /*inputDatePicker.on('change', function(e        var data = window.prepareSearch();
+        window.getAjaxRequest(data);
     });*/
 
     window.defaultAjaxValues = function() {
         return {
             'from_date': moment().startOf('year').format('YYYY-MM-DD'),
             'to_date': moment().endOf('month').format('YYYY-MM-DD'),
-            'page': 0
+            'page': page,
+            'group_by': 'month'
         }
     };
 
-    window.initializeAjaxRequest = function() {
+    window.getAjaxRequest = function(data, group_by) {
+
+        if(group_by === '' || group_by === 'undefined') {
+            group_by = 'month';
+        }
+
         {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
-            window.most_viewed_series(null,null,0);
-            window.views(null,null,0);
+            window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page);
+            window.views(data['criteria'], data['from_date'], data['to_date'], 0, group_by);
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
-            window.most_viewed_mmobj(null,null,0);
-            window.views(null,null,0);
+            window.most_viewed_mmobj(data['criteria'], data['from_date'], data['to_date'],page);
+            window.views(data['criteria'], data['from_date'], data['to_date'], 0, group_by);
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
             var series = "{{ app.request.attributes.get('_route_params')['id'] }}";
-            window.most_viewed_series_by_id(series, null, null, 0);
-            window.views_series(series, null,null, 0);
+            window.most_viewed_series_by_id(series, data['criteria'], data['from_date'], data['to_date'], page);
+            window.views_series(series, data['criteria'], data['from_date'], data['to_date'], 0, group_by);
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
             var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
-            window.most_viewed_mmobj_by_id(mmobj, null, null, 0);
-            window.views_mmobj(mmobj, null, null, 0);
+            window.most_viewed_mmobj_by_id(mmobj, data['criteria'], data['from_date'], data['to_date'], page);
+            window.views_mmobj(mmobj, data['criteria'], data['from_date'], data['to_date'], 0, group_by);
+        {% endif %}
+    };
+
+    window.initializeAjaxRequest = function() {
+        {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
+            window.most_viewed_series(null,null,page);
+            window.views(null, null,null,page, 'month');
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
+            window.most_viewed_mmobj(null,null,page);
+            window.views(null,null,null,page, 'month');
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
+            var series = "{{ app.request.attributes.get('_route_params')['id'] }}";
+            window.most_viewed_series_by_id(series, null, null, page);
+            window.views_series(series,null, null,null, page, 'month');
+        {% endif %}
+
+        {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
+            var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
+            window.most_viewed_mmobj_by_id(mmobj, null, null, page);
+            window.views_mmobj(mmobj,null, null, null, page, 'month');
         {% endif %}
     };
 
@@ -122,23 +197,26 @@
             page = data['page'];
         }
 
+        var url = "{{ path('pumukit_stats_api_seriesmostviewed') }}";
+        if(criteria != null && criteria !==  '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
+        }
+
         $.ajax({
-            url: '{{ path('pumukit_stats_api_seriesmostviewed') }}',
+            url: url,
             type: 'GET',
             data: {
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit:10
+                limit: 10
             },
             success: function(response) {
                 var series = response.series;
                 var i = 1;
                 var path = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
-                if(criteria != null) {
-                    $('.most-viewed-table-body').html('');
-                }
+                $('.most-viewed-table-body').html('');
                 series.forEach(function(data) {
                     $('.most-viewed-table-body').append(
                         "<tr>" +
@@ -156,6 +234,7 @@
                     i = i + 1;
                 });
 
+                window.createPager(response);
                 data = window.prepareDataMostViewedSeries(response.series);
                 window.initializeChartMostViewed(data);
             }
@@ -224,8 +303,13 @@
             page = data['page'];
         }
 
+        var url = "{{ path('pumukit_stats_api_mmobjmostviewed') }}";
+        if(criteria != null && criteria !==  '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
+        }
+
         $.ajax({
-            url: '{{ path('pumukit_stats_api_mmobjmostviewed') }}',
+            url: url,
             type: 'GET',
             data: {
                 criteria: {
@@ -242,6 +326,7 @@
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
 
                 $('.total-objects').html(response.total);
+                $('.most-viewed-table-body').html('');
                 mmobjs.forEach(function(data) {
                     $('.most-viewed-table-body').append(
                         "<tr>" +
@@ -259,13 +344,14 @@
                     i = i + 1;
                 });
 
+                window.createPager(response);
                 data = window.prepareDataMostViewedMmobj(response.mmobjs);
                 window.initializeChartMostViewed(data);
             }
         });
     };
 
-    window.most_viewed_mmobj_by_id = function(mmobj, from_date, to_date, page) {
+    window.most_viewed_mmobj_by_id = function(mmobj, criteria, from_date, to_date, page) {
         if (from_date == null && to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
@@ -273,8 +359,13 @@
             page = data['page'];
         }
 
+        var url = "{{ path('pumukit_schema_api_multimediaobjects') }}";
+        if(criteria != null && criteria !==  '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
+        }
+
         $.ajax({
-            url: '{{ path('pumukit_schema_api_multimediaobjects') }}',
+            url: url,
             type: 'GET',
             data: {
                 criteria: {
@@ -290,8 +381,7 @@
                 var i = 1;
                 var id = "{{ app.request.attributes.get('id') }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
-
-                $('.most-viewed-table-body').append(
+                $('.most-viewed-table-body').html(
                     "<tr>" +
                     "<td headers='ranking'>" + i + "</td>" +
                     "<td headers='title'>" +
@@ -313,33 +403,40 @@
         });
     };
 
-    window.views_series = function(series, from_date, to_date, page) {
+    window.views_series = function(series, criteria, from_date, to_date, page, group_by) {
         if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
             page = data['page'];
+            group_by = data['group_by'];
+        }
+
+        var url = "{{ path('pumukit_stats_api_viewsseries') }}";
+        if(criteria != null && criteria !==  '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
         }
 
         $.ajax({
-            url: '{{ path('pumukit_stats_api_viewsseries') }}',
+            url: url,
             type: 'GET',
             data: {
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit:10,
                 series: series,
-                group_by: 'month'
+                group_by: group_by
             },
             success: function(response) {
                 var objects = response.views;
                 var total = 1;
+                $('.views-table-body').html('');
                 objects.forEach(function(data) {
                     total = total + data.numView;
+                    var format = window.getFormat(data);
                     $('.views-table-body').append(
                         "<tr>" +
-                        "<td headers='date' style='width:50%'>" + moment(data._id).format('MMMM YYYY') + "</td>" +
+                        "<td headers='date' style='width:50%'>" + moment(data._id).format(format) + "</td>" +
                         "<td headers='views' class='text-right' style='width:50%;'>" + data.numView + "</td>" +
                         "</tr>"
                     );
@@ -353,33 +450,40 @@
         });
     };
 
-    window.views_mmobj = function(mmobj, from_date, to_date, page) {
+    window.views_mmobj = function(mmobj, criteria, from_date, to_date, page, group_by) {
         if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
             page = data['page'];
+            group_by = data['group_by'];
+        }
+
+        var url = "{{ path('pumukit_stats_api_viewsmmobj') }}";
+        if(criteria != null && criteria !==  '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
         }
 
         $.ajax({
-            url: '{{ path('pumukit_stats_api_viewsmmobj') }}',
+            url: url,
             type: 'GET',
             data: {
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit:10,
                 mmobj: mmobj,
-                group_by: 'month'
+                group_by: group_by
             },
             success: function(response) {
                 var objects = response.views;
                 var total = 1;
+                $('.views-table-body').html('');
                 objects.forEach(function(data) {
                     total = total + data.numView;
+                    var format = window.getFormat(data);
                     $('.views-table-body').append(
                         "<tr>" +
-                        "<td headers='date' style='width:50%'>" + moment(data._id).format('MMMM YYYY') + "</td>" +
+                        "<td headers='date' style='width:50%'>" + moment(data._id).format(format) + "</td>" +
                         "<td headers='views' class='text-right' style='width:50%;'>" + data.numView + "</td>" +
                         "</tr>"
                     );
@@ -393,7 +497,7 @@
         });
     };
 
-    window.most_viewed_mmobj = function(from_date, to_date, page) {
+    window.most_viewed_mmobj = function(criteria, from_date, to_date, page) {
         if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
@@ -401,8 +505,13 @@
             page = data['page'];
         }
 
+        var url = "{{ path('pumukit_stats_api_mmobjmostviewed') }}";
+        if(criteria != null && criteria !==  '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
+        }
+
         $.ajax({
-            url: '{{ path('pumukit_stats_api_mmobjmostviewed') }}',
+            url: url,
             type: 'GET',
             data: {
                 from_date: from_date,
@@ -416,6 +525,7 @@
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
+                $('.most-viewed-table-body').html('');
                 mmobjs.forEach(function(data) {
                     $('.most-viewed-table-body').append(
                         "<tr>" +
@@ -437,37 +547,46 @@
                     i = i + 1;
                 });
 
+                window.createPager(response);
                 data = window.prepareDataMostViewedMmobj(response.mmobjs);
                 window.initializeChartMostViewed(data);
             }
         });
     };
 
-    window.views = function(from_date, to_date, page) {
+    window.views = function(criteria, from_date, to_date, page, group_by) {
         if(from_date == null || to_date == null) {
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
             page = data['page'];
+            group_by = data['group_by'];
+        }
+
+        var url = "{{ path('pumukit_stats_api_views') }}";
+        if(criteria != null && criteria !== '') {
+            url = url + "?criteria[$text][$search]=" + criteria;
         }
 
         $.ajax({
-            url: '{{ path('pumukit_stats_api_views') }}',
+            url: url,
             type: 'GET',
             data: {
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit:10
+                group_by: group_by
             },
             success: function(response){
                 var objects = response.views;
                 var total = 0;
+                $('.views-table-body').html('');
                 objects.forEach(function(data) {
                     total = total + data.numView;
+                    var format = window.getFormat(data);
                     $('.views-table-body').append(
                         "<tr>" +
-                        "<td headers='date' style='width:50%'>" + moment(data._id).format('MMMM YYYY') + "</td>" +
+                        "<td headers='date' style='width:50%'>" + moment(data._id).format(format) + "</td>" +
                         "<td headers='views' class='text-right' style='width:50%; '>" + data.numView + "</td>" +
                         "</tr>"
                     );
@@ -481,10 +600,25 @@
         });
     };
 
+    window.getFormat = function(element) {
+        var format = '';
+        var number_format = (element['_id'].match(/-/g) || []).length;
+        if(number_format === 1 ){
+            format = 'MMMM YYYY';
+        } else if (number_format === 2) {
+            format = 'DD MMMM YYYY';
+        } else {
+            format = 'YYYY';
+        }
+
+        return format;
+    };
+
     window.prepareDataForAllViews = function(data) {
         var values = [];
+
         data.forEach(function(element) {
-            var timestamp = moment(element['_id']).format('YYYY').valueOf();
+            var timestamp = moment(element['_id']).valueOf();
             values.push([
                 timestamp,
                 element.numView
@@ -492,7 +626,7 @@
         });
 
         return [{
-            "key" : "Quantity",
+            "key" : "",
             "bar": true,
             "values" : values
         }];
@@ -526,24 +660,75 @@
 
     };
 
+    function range(num, page){
+        var range;
+        if (num > 6){
+            if (page > 3 && page < num-3){
+                range = [1,'...',page-1,page,page+1,'...',num];
+            }else if (page <= 3){
+                range = [1,2,3,4,'...',num];
+            }else if (page >= num-2){
+                range = [1,'...',num-3,num-2,num-1,num];
+            }
+        }else{
+            range = Array.apply(null,Array(num)).map(function (x, i) { return i+1; });
+        }
+        return range;
+    }
+
+
     /* Pager for most viewed series/mmobjs */
     window.createPager = function(data) {
+
         var total = data.total % 10;
         var count = data.total / 10;
         var pages = 0;
-        if(total != 0) {
+        if(total !== 0) {
             pages = parseInt(count) + 1;
         } else {
             pages = parseInt(count);
         }
 
-        var pager = "";
-    };
+        var active_page = parseInt("{{ app.request.get('page')|default(1) }}");
+        var aPages = range(pages,active_page);
+        var disabled_previous = '';
+        var disabled_next = '';
+        if(active_page === 1) { disabled_previous = 'disabled'; }
+        if(active_page === pages) { disabled_next = 'disabled'; }
 
+        var html = "<ul class='pagination'>";
+
+        if(active_page !== 1) {
+            html = html + "<li class='change_page' data-value='"+ (active_page -1) +"'>" +
+                "<a>Previous</a>" +
+                "</li>";
+        } else {
+            html = html + "<li class='" + disabled_previous + "'><a>Previous</a></li>";
+        }
+
+        aPages.forEach(function(element) {
+            var htmlPage = '';
+            if(element !== '...') {
+                htmlPage = "<li><a class='change_page' data-value='"+ element +"'>" + element + "</a></li>";
+            } else {
+                htmlPage = "<li><a>" + element + "</a></li>";
+            }
+            html = html + htmlPage;
+        });
+
+        if(active_page !== pages) {
+            html = html + "<li><a class='change_page' data-value='"+ (active_page +1) +"'>Next</a></li></ul></div>";
+        } else {
+            html = html + "<li class='" + disabled_next + "'><a>Next</a></li></ul>";
+        }
+
+        $('.most-viewed-paginator').html(html);
+    };
 
     /* Charts of views functions */
     window.initializeChartMostViewed = function(data) {
 
+        $('#chart-most-viewed svg').html('');
         nv.addGraph(function() {
             var chart = nv.models.multiBarHorizontalChart()
                 .x(function(d) { return d.label })
@@ -568,6 +753,7 @@
 
     window.initializeChartAllViews = function(data) {
 
+        $('#chart-all-views svg').html('');
         nv.addGraph(function() {
             var chart = nv.models.linePlusBarChart()
                 .margin({top: 30, right: 60, bottom: 50, left: 70})

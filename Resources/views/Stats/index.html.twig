@@ -2,10 +2,10 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">
+    {#<link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">#}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css" />
     <link href="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/pumukitstatsui/css/statsui.css') }}" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <style>
@@ -66,8 +66,6 @@
 
         .table-views thead th {
             height: 30px;
-
-            /*text-align: left;*/
         }
 
         .table-views tbody {
@@ -86,6 +84,14 @@
 
         .active-button {
             background-color: #008846 !important;
+        }
+
+        .nv-context {
+            display: none !important;
+        }
+
+        .pagination {
+            margin:25px;
         }
     </style>
 
@@ -106,11 +112,11 @@
 
     <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-md-12">
-                <h1>{{ template_title }}</h1>
-            </div>
-        </div>
+        <h3 class="cab_body_div">
+            <ul class="breadcrumb" style="margin-bottom: 5px;">
+                <li class="active">{{ template_title }}</li>
+            </ul>
+        </h3>
 
         <div class="row block-search-and-views">
             {% include "PumukitStatsUIBundle:Search:index.html.twig" %}
