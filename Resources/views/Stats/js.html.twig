@@ -24,6 +24,7 @@
                 "format": "YYYY/MM/DD"
             },
             "alwaysShowCalendars": true,
+            "showDropdowns": true,
             "startDate": moment().startOf('year').format('YYYY-MM-DD'),
             "endDate": moment().endOf('month').format('YYYY-MM-DD')
         });
@@ -582,7 +583,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                group_by: group_by
+                group_by: group_by,
+                sort: 1,
             },
             success: function(response){
                 var objects = response.views;
@@ -741,11 +743,12 @@
                 .x(function(d) { return d.label })
                 .y(function(d) { return d.value })
                 .margin({top: 30, right: 20, bottom: 50, left: 175})
-                .showValues(true)
-                .showControls(false);
+                .showValues(false)
+                .showControls(false)
+                .showLegend(false);
 
             chart.yAxis
-                .tickFormat(d3.format(',.2f'));
+                .tickFormat(d3.format('~s'));
 
             d3.select('#chart-most-viewed svg')
                 .datum(data)
@@ -767,6 +770,7 @@
                 .x(function(d,i) { return i })
                 .y(function(d) { return d[1] })
                 .color(d3.scale.category10().range())
+                .showLegend(false);
             ;
 
             chart.xAxis
@@ -777,10 +781,7 @@
                 });
 
             chart.y1Axis
-                .tickFormat(d3.format(',f'));
-
-            chart.y2Axis
-                .tickFormat(function(d) { return '$' + d3.format(',f')(d) });
+                .tickFormat(d3.format('~s'));
 
             chart.bars.forceY([0]);
 
