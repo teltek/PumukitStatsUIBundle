@@ -175,3 +175,92 @@
 .btn-success:not(.btn-link):not(.btn-flat) {
     background-color: #008846; /* Fix A11y */
 }
+
+.block-results-views {
+    background-color:#008846;
+    margin-top:20px;
+    height:80px;
+    color:white;
+    box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+}
+
+.block-results-objects {
+    background-color:#de3601;
+    margin-top:20px;
+    height:80px;
+    color:white;
+    box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+}
+
+.block-results-views i, .block-results-objects i {
+    padding-top:10px;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+    font-size:60px;
+}
+
+.block-search-and-views {
+    margin-top:10px;
+}
+
+.block-preview {
+    margin-top:30px;
+    background-color: white;
+    height: auto !important;
+    box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+}
+
+.btn-stats-search {
+    padding: 8px 10px;
+}
+
+.form_daterangepicker {
+    border:none;
+}
+
+.table-views {
+    margin-bottom: 0px;
+}
+
+.table-views thead, .table-views tbody, .table-views tr, .table-views td, .table-views th { display: block; }
+
+.table-views tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.table-views thead th {
+    height: 30px;
+}
+
+.table-views tbody {
+    height: 340px;
+    overflow-y: auto;
+}
+
+.table-views tbody td, .table-views thead th {
+    width: 19.2%;
+    float: left;
+}
+
+.btn-group .btn-default:hover {
+    background-color:#EAEAEA;
+}
+
+.active-button {
+    background-color: #008846 !important;
+}
+
+.nv-context {
+    display: none !important;
+}
+
+.pagination {
+    margin:25px;
+}
+
+.cab_body_div .breadcrumb {
+    margin-bottom: 5px;
+}

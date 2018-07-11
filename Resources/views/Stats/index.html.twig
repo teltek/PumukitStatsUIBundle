@@ -2,110 +2,17 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {#<link href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.min.css') }}" rel="stylesheet">#}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css" />
-    <link href="{{ asset('bundles/pumukitstatsui/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('bundles/pumukitstatsui/vendor/nvd3/nv.d3.min.css') }}" />
     <link href="{{ asset('bundles/pumukitstatsui/css/statsui.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-    <style>
-        .block-results-views {
-            background-color:#008846;
-            margin-top:20px;
-            height:80px;
-            color:white;
-            box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
-        }
-
-        .block-results-objects {
-            background-color:#de3601;
-            margin-top:20px;
-            height:80px;
-            color:white;
-            box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
-        }
-
-        .block-results-views i, .block-results-objects i {
-            padding-top:10px;
-            opacity: 0.2;
-            filter: alpha(opacity=20);
-            font-size:60px;
-        }
-
-        .block-search-and-views {
-            margin-top:10px;
-        }
-
-        .block-preview {
-            margin-top:30px;
-            background-color: white;
-            height: auto !important;
-            box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
-        }
-
-        .btn-stats-search {
-            padding: 8px 10px;
-        }
-
-        .form_daterangepicker {
-            border:none;
-        }
-
-        .table-views {
-            margin-bottom: 0px;
-        }
-
-        .table-views thead, .table-views tbody, .table-views tr, .table-views td, .table-views th { display: block; }
-
-        .table-views tr:after {
-            content: ' ';
-            display: block;
-            visibility: hidden;
-            clear: both;
-        }
-
-        .table-views thead th {
-            height: 30px;
-        }
-
-        .table-views tbody {
-            height: 340px;
-            overflow-y: auto;
-        }
-
-        .table-views tbody td, .table-views thead th {
-            width: 19.2%;
-            float: left;
-        }
-
-        .btn-group .btn-default:hover {
-            background-color:#EAEAEA;
-        }
-
-        .active-button {
-            background-color: #008846 !important;
-        }
-
-        .nv-context {
-            display: none !important;
-        }
-
-        .pagination {
-            margin:25px;
-        }
-    </style>
-
-
+    <link href="{{ asset('bundles/pumukitstatsui/vendor/daterangepicker/daterangepicker.min.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    {#<script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/d3/d3.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/build/nv.d3.js') }}"></script>#}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/d3/d3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/nvd3/nv.d3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/moment/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pumukitstatsui/vendor/daterangepicker/daterangepicker.min.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -113,7 +20,7 @@
     <div class="container-fluid">
 
         <h3 class="cab_body_div">
-            <ul class="breadcrumb" style="margin-bottom: 5px;">
+            <ul class="breadcrumb">
                 <li class="active">{{ template_title }}</li>
             </ul>
         </h3>
