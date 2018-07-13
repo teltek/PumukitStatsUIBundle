@@ -97,6 +97,8 @@
 
         var data = window.prepareSearch();
         var page_selected = $(this).data('value');
+        location.search = "?page="+page_selected;
+
         {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
         window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page_selected);
         {% endif %}
@@ -584,7 +586,7 @@
                 to_date: to_date,
                 page: page,
                 group_by: group_by,
-                sort: 1,
+                sort: 1
             },
             success: function(response){
                 var objects = response.views;
@@ -688,31 +690,23 @@
 
     /* Pager for most viewed series/mmobjs */
     window.createPager = function(data) {
+        var count = Math.ceil(data.total / 10);
+        var pages = count - 1;
 
-        var total = data.total % 10;
-        var count = data.total / 10;
-        var pages = 0;
-        if(total !== 0) {
-            pages = parseInt(count) + 1;
-        } else {
-            pages = parseInt(count);
-        }
-
-        var active_page = parseInt("{{ app.request.get('page')|default(1) }}");
+        var active_page = parseInt("{{ app.request.get('page')|default(0) }}");
         var aPages = range(pages,active_page);
         var disabled_previous = '';
         var disabled_next = '';
-        if(active_page === 1) { disabled_previous = 'disabled'; }
+        if(active_page === 0) { disabled_previous = 'disabled'; }
         if(active_page === pages) { disabled_next = 'disabled'; }
 
         var html = "<ul class='pagination'>";
-
-        if(active_page !== 1) {
+        if(active_page === 0) {
+            html = html + "<li class='" + disabled_previous + "'><a>Previous</a></li>";
+        } else {
             html = html + "<li class='change_page' data-value='"+ (active_page -1) +"'>" +
                 "<a>Previous</a>" +
                 "</li>";
-        } else {
-            html = html + "<li class='" + disabled_previous + "'><a>Previous</a></li>";
         }
 
         aPages.forEach(function(element) {
@@ -771,7 +765,6 @@
                 .y(function(d) { return d[1] })
                 .color(d3.scale.category10().range())
                 .showLegend(false);
-            ;
 
             chart.xAxis
                 .showMaxMin(false)
@@ -788,8 +781,7 @@
             d3.select('#chart-all-views svg')
                 .datum(data)
                 .transition().duration(500)
-                .call(chart)
-            ;
+                .call(chart);
 
             nv.utils.windowResize(chart.update);
 
