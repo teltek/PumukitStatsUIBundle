@@ -21,7 +21,7 @@
                 'This Year': [moment().startOf('year'), moment()]
             },
             "locale": {
-                "format": "YYYY/MM/DD"
+                "format": "YYYY-MM-DD"
             },
             "linkedCalendars": false,
             "alwaysShowCalendars": true,
@@ -126,7 +126,7 @@
     window.defaultAjaxValues = function() {
         return {
             'from_date': moment().startOf('year').format('YYYY-MM-DD'),
-            'to_date': moment().endOf('month').format('YYYY-MM-DD'),
+            'to_date': moment().format('YYYY-MM-DD'),
             'page': page,
             'group_by': 'month'
         }
