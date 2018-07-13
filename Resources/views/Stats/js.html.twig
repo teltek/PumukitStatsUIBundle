@@ -23,10 +23,11 @@
             "locale": {
                 "format": "YYYY/MM/DD"
             },
+            "linkedCalendars": false,
             "alwaysShowCalendars": true,
             "showDropdowns": true,
             "startDate": moment().startOf('year').format('YYYY-MM-DD'),
-            "endDate": moment().endOf('month').format('YYYY-MM-DD')
+            "endDate": moment().format('YYYY-MM-DD')
         });
 
         /* No used because event on change on datepicker will be execute */
