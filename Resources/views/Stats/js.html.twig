@@ -645,7 +645,7 @@
         var url = "{{ path('pumukit_webtv_multimediaobject_index', {'id' : '__ID__' }) }}";
         $('#chart-most-viewed').html(
                     "<a href='" +
-                    url.replace('__ID__', mmobj._id) +
+                    url.replace('__ID__', mmobj.id) +
                     "' target='_blank'>" +
                     "<div class='pumukit_mmobj'>"  +
                     "<div class='thumbnail'>" +
