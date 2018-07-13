@@ -61,6 +61,7 @@
     $('.btn-reset-filter').on('click',function(event) {
         event.preventDefault();
         $('#title').val('');
+        $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
         window.initializeAjaxRequest();
     });
 
