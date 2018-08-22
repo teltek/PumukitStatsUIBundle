@@ -78,6 +78,14 @@
                 <source>Statistics of the object</source>
                 <target>Estadísticas do obxecto</target>
             </trans-unit>
+            <trans-unit id="30a4587ca5fd11e898d0529269fb1459" resname="Total views in the date">
+                <source>Total views in the date</source>
+                <target>Total de vistas na data</target>
+            </trans-unit>
+            <trans-unit id="30a45b1aa5fd11e898d0529269fb1459" resname="Total Objects">
+                <source>Total Objects</source>
+                <target>Total de obxectos</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
