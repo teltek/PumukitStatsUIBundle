@@ -719,10 +719,10 @@
 
         if(active_page !== 1) {
             html = html + "<li class='change_page' data-value='"+ (active_page -1) +"'>" +
-                "<a>Previous</a>" +
+                "<a>{% trans %}Previous{% endtrans %}</a>" +
                 "</li>";
         } else {
-            html = html + "<li class='" + disabled_previous + "'><a>Previous</a></li>";
+            html = html + "<li class='" + disabled_previous + "'><a>{% trans %}Previous{% endtrans %}</a></li>";
         }
 
         aPages.forEach(function(element) {
@@ -736,9 +736,9 @@
         });
 
         if(active_page !== pages) {
-            html = html + "<li><a class='change_page' data-value='"+ (active_page +1) +"'>Next</a></li></ul></div>";
+            html = html + "<li><a class='change_page' data-value='"+ (active_page +1) +"'>{% trans %}Next{% endtrans %}</a></li></ul></div>";
         } else {
-            html = html + "<li class='" + disabled_next + "'><a>Next</a></li></ul>";
+            html = html + "<li class='" + disabled_next + "'><a>{% trans %}Next{% endtrans %}</a></li></ul>";
         }
 
         $('.most-viewed-paginator').html(html);

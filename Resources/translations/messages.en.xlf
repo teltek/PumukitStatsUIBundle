@@ -86,6 +86,14 @@
                 <source>Total Objects</source>
                 <target>Total Objects</target>
             </trans-unit>
+            <trans-unit id="4f9c60f0a61911e898d0529269fb1459" resname="Previous">
+                <source>Previous</source>
+                <target>Previous</target>
+            </trans-unit>
+            <trans-unit id="4f9c63c0a61911e898d0529269fb1459" resname="Next">
+                <source>Next</source>
+                <target>Next</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
