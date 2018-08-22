@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" target-language="es" datatype="plaintext" original="file.ext">
+    <file source-language="en" target-language="gl" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="afbae52a868d11e8adc0fa7ae01bbebc" resname="General Statistics for Series">
                 <source>General Statistics for Series</source>
