@@ -219,7 +219,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit: 10
+                limit: 10,
+                sort: 1
             },
             success: function(response) {
                 var series = response.series;
@@ -276,7 +277,8 @@
                     'series': series
                 },
                 from_date: from_date,
-                to_date: to_date
+                to_date: to_date,
+                sort: 1
             },
             success: function(response) {
                 $('#'+series).html(response.total);
@@ -291,7 +293,8 @@
             data: {
                 mmobj: mmobj,
                 from_date: from_date,
-                to_date: to_date
+                to_date: to_date,
+                sort: 1
             },
             success: function(response) {
                 var views = response.views;
@@ -328,7 +331,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit:10
+                limit:10,
+                sort: 1
             },
             success: function(response) {
                 var mmobjs = response.mmobjs;
@@ -384,7 +388,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit: 10
+                limit: 10,
+                sort: 1
             },
             success: function (response) {
                 var mmobj = response.mmobjs;
@@ -435,7 +440,8 @@
                 to_date: to_date,
                 page: page,
                 series: series,
-                group_by: group_by
+                group_by: group_by,
+                sort: 1
             },
             success: function(response) {
                 var objects = response.views;
@@ -482,7 +488,8 @@
                 to_date: to_date,
                 page: page,
                 mmobj: mmobj,
-                group_by: group_by
+                group_by: group_by,
+                sort: 1
             },
             success: function(response) {
                 var objects = response.views;
