@@ -22,12 +22,13 @@
                 'This Year': [moment().startOf('year'), moment()]
             },
             "locale": {
-                "format": "YYYY/MM/DD"
+                "format": "YYYY-MM-DD"
             },
+            "linkedCalendars": false,
             "alwaysShowCalendars": true,
             "showDropdowns": true,
             "startDate": moment().startOf('year').format('YYYY-MM-DD'),
-            "endDate": moment().endOf('month').format('YYYY-MM-DD')
+            "endDate": moment().format('YYYY-MM-DD')
         });
 
         /* No used because event on change on datepicker will be execute */
@@ -127,7 +128,7 @@
     window.defaultAjaxValues = function() {
         return {
             'from_date': moment().startOf('year').format('YYYY-MM-DD'),
-            'to_date': moment().endOf('month').format('YYYY-MM-DD'),
+            'to_date': moment().format('YYYY-MM-DD'),
             'page': page,
             'group_by': 'month'
         }
