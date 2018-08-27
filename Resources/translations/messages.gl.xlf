@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" target-language="es" datatype="plaintext" original="file.ext">
+    <file source-language="en" target-language="gl" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="afbae52a868d11e8adc0fa7ae01bbebc" resname="General Statistics for Series">
                 <source>General Statistics for Series</source>
@@ -77,6 +77,22 @@
             <trans-unit id="94a7c3dc868f11e8adc0fa7ae01bbebc" resname="Statistics of the object">
                 <source>Statistics of the object</source>
                 <target>Estadísticas do obxecto</target>
+            </trans-unit>
+            <trans-unit id="30a4587ca5fd11e898d0529269fb1459" resname="Total views in the date">
+                <source>Total views in the date</source>
+                <target>Total de vistas na data</target>
+            </trans-unit>
+            <trans-unit id="30a45b1aa5fd11e898d0529269fb1459" resname="Total Objects">
+                <source>Total Objects</source>
+                <target>Total de obxectos</target>
+            </trans-unit>
+            <trans-unit id="4f9c60f0a61911e898d0529269fb1459" resname="Previous">
+                <source>Previous</source>
+                <target>Anterior</target>
+            </trans-unit>
+            <trans-unit id="4f9c63c0a61911e898d0529269fb1459" resname="Next">
+                <source>Next</source>
+                <target>Seguinte</target>
             </trans-unit>
         </body>
     </file>
