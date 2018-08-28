@@ -188,7 +188,7 @@
 
     window.prepareSearch = function() {
         var criteria = $('#title').val();
-        var dates = $('#form_daterangepicker').val().split("-");
+        var dates = $('#form_daterangepicker').val().split(" - ");
         var from_date = dates[0].trim().replace(/\//g, "-");
         var to_date = dates[1].trim().replace(/\//g, "-");
 
