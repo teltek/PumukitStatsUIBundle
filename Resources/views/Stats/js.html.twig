@@ -11,6 +11,7 @@
     $(function() {
         inputDatePicker.daterangepicker({
             "minYear": 1970,
+            "maxDate": moment().format('YYYY-MM-DD'),
             ranges: {
                 'Today': [moment(), moment()],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -21,12 +22,13 @@
                 'This Year': [moment().startOf('year'), moment()]
             },
             "locale": {
-                "format": "YYYY/MM/DD"
+                "format": "YYYY-MM-DD"
             },
+            "linkedCalendars": false,
             "alwaysShowCalendars": true,
             "showDropdowns": true,
             "startDate": moment().startOf('year').format('YYYY-MM-DD'),
-            "endDate": moment().endOf('month').format('YYYY-MM-DD')
+            "endDate": moment().format('YYYY-MM-DD')
         });
 
         /* No used because event on change on datepicker will be execute */
@@ -48,7 +50,7 @@
 
     $('.btn-stats-calendar-remove').on('click', function(event){
         event.preventDefault();
-        $('#form_daterangepicker').val('');
+        $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
     });
 
     $('.btn-stats-search-remove').on('click', function(event){
@@ -61,6 +63,7 @@
     $('.btn-reset-filter').on('click',function(event) {
         event.preventDefault();
         $('#title').val('');
+        $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
         window.initializeAjaxRequest();
     });
 
@@ -127,7 +130,7 @@
     window.defaultAjaxValues = function() {
         return {
             'from_date': moment().startOf('year').format('YYYY-MM-DD'),
-            'to_date': moment().endOf('month').format('YYYY-MM-DD'),
+            'to_date': moment().format('YYYY-MM-DD'),
             'page': page,
             'group_by': 'month'
         }
@@ -219,7 +222,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit: 10
+                limit: 10,
+                sort: 1
             },
             success: function(response) {
                 var series = response.series;
@@ -276,7 +280,8 @@
                     'series': series
                 },
                 from_date: from_date,
-                to_date: to_date
+                to_date: to_date,
+                sort: 1
             },
             success: function(response) {
                 $('#'+series).html(response.total);
@@ -291,7 +296,8 @@
             data: {
                 mmobj: mmobj,
                 from_date: from_date,
-                to_date: to_date
+                to_date: to_date,
+                sort: 1
             },
             success: function(response) {
                 var views = response.views;
@@ -328,7 +334,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit:10
+                limit:10,
+                sort: 1
             },
             success: function(response) {
                 var mmobjs = response.mmobjs;
@@ -384,7 +391,8 @@
                 from_date: from_date,
                 to_date: to_date,
                 page: page,
-                limit: 10
+                limit: 10,
+                sort: 1
             },
             success: function (response) {
                 var mmobj = response.mmobjs;
@@ -435,7 +443,8 @@
                 to_date: to_date,
                 page: page,
                 series: series,
-                group_by: group_by
+                group_by: group_by,
+                sort: 1
             },
             success: function(response) {
                 var objects = response.views;
@@ -482,7 +491,8 @@
                 to_date: to_date,
                 page: page,
                 mmobj: mmobj,
-                group_by: group_by
+                group_by: group_by,
+                sort: 1
             },
             success: function(response) {
                 var objects = response.views;
@@ -647,7 +657,7 @@
         var url = "{{ path('pumukit_webtv_multimediaobject_index', {'id' : '__ID__' }) }}";
         $('#chart-most-viewed').html(
                     "<a href='" +
-                    url.replace('__ID__', mmobj._id) +
+                    url.replace('__ID__', mmobj.id) +
                     "' target='_blank'>" +
                     "<div class='pumukit_mmobj'>"  +
                     "<div class='thumbnail'>" +
@@ -705,7 +715,7 @@
             html = html + "<li class='" + disabled_previous + "'><a>Previous</a></li>";
         } else {
             html = html + "<li class='change_page' data-value='"+ (active_page -1) +"'>" +
-                "<a>Previous</a>" +
+                "<a>{% trans %}Previous{% endtrans %}</a>" +
                 "</li>";
         }
 
@@ -720,9 +730,9 @@
         });
 
         if(active_page !== pages) {
-            html = html + "<li><a class='change_page' data-value='"+ (active_page +1) +"'>Next</a></li></ul></div>";
+            html = html + "<li><a class='change_page' data-value='"+ (active_page +1) +"'>{% trans %}Next{% endtrans %}</a></li></ul></div>";
         } else {
-            html = html + "<li class='" + disabled_next + "'><a>Next</a></li></ul>";
+            html = html + "<li class='" + disabled_next + "'><a>{% trans %}Next{% endtrans %}</a></li></ul>";
         }
 
         $('.most-viewed-paginator').html(html);
