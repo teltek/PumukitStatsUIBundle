@@ -712,7 +712,7 @@
 
         var html = "<ul class='pagination'>";
         if(active_page === 0) {
-            html = html + "<li class='" + disabled_previous + "'><a>Previous</a></li>";
+            html = html + "<li class='" + disabled_previous + "'><a>{% trans %}Previous{% endtrans %}</a></li>";
         } else {
             html = html + "<li class='change_page' data-value='"+ (active_page -1) +"'>" +
                 "<a>{% trans %}Previous{% endtrans %}</a>" +
