@@ -8,7 +8,7 @@
     $('.month').addClass('active-button');
     $('.year').removeClass('active-button');
 
-    $(function() {
+    window.initDateRangePicker = function() {
         inputDatePicker.daterangepicker({
             "minYear": 1970,
             "maxDate": moment().format('YYYY-MM-DD'),
@@ -29,7 +29,10 @@
             "startDate": moment().startOf('year').format('YYYY-MM-DD'),
             "endDate": moment().format('YYYY-MM-DD')
         });
+    };
 
+    $(function() {
+        window.initDateRangePicker();
         /* No used because event on change on datepicker will be execute */
         //window.initializeAjaxRequest();
     });
@@ -50,6 +53,8 @@
     $('.btn-stats-calendar-remove').on('click', function(event){
         event.preventDefault();
         $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
+        window.initDateRangePicker();
+        window.initializeAjaxRequest();
     });
 
     $('.btn-stats-search-remove').on('click', function(event){
@@ -63,6 +68,7 @@
         event.preventDefault();
         $('#title').val('');
         $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
+        window.initDateRangePicker();
         window.initializeAjaxRequest();
     });
 
