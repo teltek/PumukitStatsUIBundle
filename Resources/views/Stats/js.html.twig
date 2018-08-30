@@ -689,6 +689,8 @@
                 range = [1,2,3,4,'...',num];
             }else if (page >= num-2){
                 range = [1,'...',num-3,num-2,num-1,num];
+            } else {
+                range = [1,'...',page,'...',num];
             }
         }else{
             range = Array.apply(null,Array(num)).map(function (x, i) { return i+1; });
@@ -709,6 +711,7 @@
         if(active_page === 0) { disabled_previous = 'disabled'; }
         if(active_page === pages) { disabled_next = 'disabled'; }
 
+        console.log(active_page);
         var html = "<ul class='pagination'>";
         if(active_page === 0) {
             html = html + "<li class='" + disabled_previous + "'><a>{% trans %}Previous{% endtrans %}</a></li>";
@@ -721,7 +724,12 @@
         aPages.forEach(function(element) {
             var htmlPage = '';
             if(element !== '...') {
-                htmlPage = "<li><a class='change_page' data-value='"+ element +"'>" + element + "</a></li>";
+                if(element == active_page) {
+                    htmlPage = "<li><a class='change_page' style='background-color:#EAEAEA;' data-value='" + element + "'>" + element + "</a></li>";
+
+                } else {
+                    htmlPage = "<li><a class='change_page' data-value='" + element + "'>" + element + "</a></li>";
+                }
             } else {
                 htmlPage = "<li><a>" + element + "</a></li>";
             }
