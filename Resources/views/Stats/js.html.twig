@@ -711,7 +711,6 @@
         if(active_page === 0) { disabled_previous = 'disabled'; }
         if(active_page === pages) { disabled_next = 'disabled'; }
 
-        console.log(active_page);
         var html = "<ul class='pagination'>";
         if(active_page === 0) {
             html = html + "<li class='" + disabled_previous + "'><a>{% trans %}Previous{% endtrans %}</a></li>";
