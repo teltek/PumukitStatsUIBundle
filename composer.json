@@ -3,9 +3,9 @@
     "description": "Stats UI for PuMuKIT",
     "type": "symfony-bundle",
     "keywords": [
-        "ui",        
+        "ui",
         "stats",
-        "symfony2",
+        "symfony",
         "bundle",
         "pumukit",
         "teltek"
@@ -19,7 +19,7 @@
     "authors": [
         {
             "name": "Teltek Team",
-            "homepage": "http://teltek.es"            
+            "homepage": "http://teltek.es"
         }
     ],
     "autoload": {

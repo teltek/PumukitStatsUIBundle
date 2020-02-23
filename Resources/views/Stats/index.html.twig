@@ -1,4 +1,4 @@
-{% extends 'PumukitNewAdminBundle::layout.html.twig' %}
+{% extends '@PumukitNewAdmin/layout.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -26,20 +26,20 @@
         </h3>
 
         <div class="row block-search-and-views">
-            {% include "PumukitStatsUIBundle:Search:index.html.twig" %}
+            {% include "@PumukitStatsUI/Search/index.html.twig" %}
         </div>
 
         <div class="row block-stats-most-viewed">
-            {% include "PumukitStatsUIBundle:MostViewed:index.html.twig" %}
+            {% include "@PumukitStatsUI/MostViewed/index.html.twig" %}
         </div>
 
         <div class="row block-preview">
-            {% include "PumukitStatsUIBundle:Views:index.html.twig" %}
+            {% include "@PumukitStatsUI/Views/index.html.twig" %}
         </div>
 
     </div>
 
-    {% include "PumukitStatsUIBundle:Stats:js.html.twig" %}
+    {% include "@PumukitStatsUI/Stats/js.html.twig" %}
 
 {% endblock %}
 
