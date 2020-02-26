@@ -1,6 +1,5 @@
 <script type="text/javascript">
     "use strict";
-
     var inputDatePicker = $('input[name="datefilter"]');
     var locale = "{{ app.request.getLocale() }}";
     var page = "{{ app.request.get('page')|default(0) }}";
@@ -33,8 +32,8 @@
 
     $(function() {
         window.initDateRangePicker();
-        /* No used because event on change on datepicker will be execute */
-        //window.initializeAjaxRequest();
+        var data = window.prepareSearch();
+        window.getAjaxRequest(data);
     });
 
     inputDatePicker.on('apply.daterangepicker', function(ev, picker) {
