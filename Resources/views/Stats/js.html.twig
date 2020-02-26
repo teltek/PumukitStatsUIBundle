@@ -1,6 +1,5 @@
 <script type="text/javascript">
     "use strict";
-
     var inputDatePicker = $('input[name="datefilter"]');
     var locale = "{{ app.request.getLocale() }}";
     var page = "{{ app.request.get('page')|default(0) }}";
@@ -33,8 +32,8 @@
 
     $(function() {
         window.initDateRangePicker();
-        /* No used because event on change on datepicker will be execute */
-        //window.initializeAjaxRequest();
+        var data = window.prepareSearch();
+        window.getAjaxRequest(data);
     });
 
     inputDatePicker.on('apply.daterangepicker', function(ev, picker) {
@@ -242,7 +241,7 @@
                         "<td headers='ranking'>" + i + "</td>" +
                         "<td headers='title'>" +
                         "<a href='" + path.replace('__ID__', data.series.id) + "'>" +
-                        data.series.title[locale] +
+                        data.series.i18nTitle[locale] +
                         "</a>" +
                         "</td>" +
                         "<td headers='videos' id='" +  data.series.id +"'>" + 0 + "</td>" +
@@ -263,7 +262,7 @@
     window.prepareDataMostViewedSeries = function(data) {
         var values = [];
         data.forEach(function(element) {
-            values.push({'label': element.series.title[locale], 'value': element.num_viewed });
+            values.push({'label': element.series.i18nTitle[locale], 'value': element.num_viewed });
         });
         return [{'key' : '', 'color': '#ED6D00', 'values': values}];
     };
@@ -271,7 +270,7 @@
     window.prepareDataMostViewedMmobj = function(data) {
         var values = [];
         data.forEach(function(element) {
-            values.push({'label': element.mmobj.title[locale], 'value': element.num_viewed });
+            values.push({'label': element.mmobj.i18nTitle[locale], 'value': element.num_viewed });
         });
         return [{'key' : '', 'color': '#ED6D00','values': values}];
     };
@@ -355,11 +354,11 @@
                         "<td headers='ranking'>" + i + "</td>" +
                         "<td headers='title'>" +
                         "<a href='" + path.replace('__ID__', data.mmobj.id) + "'>" +
-                        data.mmobj.title[locale] +
+                        data.mmobj.i18nTitle[locale] +
                         "</a>" +
                         "</td>" +
                         "<td headers='recording'>" + moment(data.mmobj.record_date).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
-                        "<td headers='series'>" + data.mmobj.series.title[locale] + "</td>" +
+                        "<td headers='series'>" + data.mmobj.series.i18nTitle[locale] + "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
                         "</tr>"
                     );
@@ -408,12 +407,12 @@
                     "<tr>" +
                     "<td headers='ranking'>" + i + "</td>" +
                     "<td headers='title'>" +
-                    mmobj[id].title[locale] +
+                    mmobj[id].i18nTitle[locale] +
                     "</td>" +
                     "<td headers='recording'>" + moment(mmobj[id].record_date).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                     "<td headers='series'>" +
                     "<a href='" + url.replace('__ID__', mmobj[id].series.id) + "'>" +
-                    mmobj[id].series.title[locale] +
+                    mmobj[id].series.i18nTitle[locale] +
                     "</a>" +
                     "</td>" +
                     "<td headers='views' id='"+ id +"'>" + 0 + "</td>" +
@@ -421,7 +420,7 @@
                 );
                 window.getInfoMmobj(id, from_date, to_date);
                 window.showMmobj(mmobj[id]);
-                $('.title_of_most_viewed').html(mmobj[id].series.title[locale]);
+                $('.title_of_most_viewed').html(mmobj[id].series.i18nTitle[locale]);
             }
         });
     };
@@ -534,7 +533,6 @@
         if(criteria != null && criteria !==  '') {
             url = url + "?criteria[$text][$search]=" + criteria;
         }
-
         $.ajax({
             url: url,
             type: 'GET',
@@ -557,13 +555,13 @@
                         "<td headers='ranking'>" + i + "</td>" +
                         "<td headers='title'>" +
                         "<a href='" + path.replace('__ID__', data.mmobj.id) + "'>" +
-                        data.mmobj.title[locale] +
+                        data.mmobj.i18nTitle[locale] +
                         "</a>" +
                         "</td>" +
                         "<td headers='recording'>" + moment(data.mmobj.record_date).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                         "<td headers='series'>" +
                         "<a href='" + url.replace('__ID__', data.mmobj.series.id) + "'>" +
-                        data.mmobj.series.title[locale] +
+                        data.mmobj.series.i18nTitle[locale] +
                         "</a>" +
                         "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
@@ -672,11 +670,11 @@
                     "<div class='thumbnailholder'></div></div>" +
                     "<div class='info-wrapper'>" +
                     "<div class='info'>" +
-                    "<div class='title' title='"+ mmobj.title[locale] + "'>" +
-                    "<span class='mmobj_thumbnail_title'>" + mmobj.title[locale] + "</span>" +
+                    "<div class='title' title='"+ mmobj.i18nTitle[locale] + "'>" +
+                    "<span class='mmobj_thumbnail_title'>" + mmobj.i18nTitle[locale] + "</span>" +
                     "</div>" +
                     "<div class='subtitle'>" +
-                    "<abbr title='" + mmobj.subtitle[locale] + "'>"+ mmobj.subtitle[locale] +"</abbr>" +
+                    "<abbr title='" + mmobj.i18nSubtitle[locale] + "'>"+ mmobj.i18nSubtitle[locale] +"</abbr>" +
                     "</div>" +
                     "<div class='date mmobj'>" +
                         moment(mmobj.record_date).format('YYYY-MM-DD HH:mm:ss') +
