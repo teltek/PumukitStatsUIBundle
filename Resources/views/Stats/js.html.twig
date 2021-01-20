@@ -399,7 +399,7 @@
                 sort: -1
             },
             success: function (response) {
-                var mmobj = response.mmobjs;
+                var mmobj = response.mmobjs[0];
                 var i = 1;
                 var id = "{{ app.request.attributes.get('id') }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
@@ -407,20 +407,20 @@
                     "<tr>" +
                     "<td headers='ranking'>" + i + "</td>" +
                     "<td headers='title'>" +
-                    mmobj[id].i18nTitle[locale] +
+                    mmobj.i18nTitle[locale] +
                     "</td>" +
-                    "<td headers='recording'>" + moment(mmobj[id].record_date).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
+                    "<td headers='recording'>" + moment(mmobj.record_date).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                     "<td headers='series'>" +
-                    "<a href='" + url.replace('__ID__', mmobj[id].series.id) + "'>" +
-                    mmobj[id].series.i18nTitle[locale] +
+                    "<a href='" + url.replace('__ID__', mmobj.series.id) + "'>" +
+                    mmobj.series.i18nTitle[locale] +
                     "</a>" +
                     "</td>" +
                     "<td headers='views' id='"+ id +"'>" + 0 + "</td>" +
                     "</tr>"
                 );
                 window.getInfoMmobj(id, from_date, to_date);
-                window.showMmobj(mmobj[id]);
-                $('.title_of_most_viewed').html(mmobj[id].series.i18nTitle[locale]);
+                window.showMmobj(mmobj);
+                $('.title_of_most_viewed').html(mmobj.series.i18nTitle[locale]);
             }
         });
     };
@@ -658,6 +658,7 @@
 
     window.showMmobj = function(mmobj) {
         var url = "{{ path('pumukit_webtv_multimediaobject_index', {'id' : '__ID__' }) }}";
+        var subtitle = mmobj.i18nSubtitle[locale] ? mmobj.i18nSubtitle[locale] : '';
         $('#chart-most-viewed').html(
                     "<a href='" +
                     url.replace('__ID__', mmobj.id) +
@@ -674,7 +675,7 @@
                     "<span class='mmobj_thumbnail_title'>" + mmobj.i18nTitle[locale] + "</span>" +
                     "</div>" +
                     "<div class='subtitle'>" +
-                    "<abbr title='" + mmobj.i18nSubtitle[locale] + "'>"+ mmobj.i18nSubtitle[locale] +"</abbr>" +
+                    "<abbr title='" + subtitle + "'>"+ subtitle +"</abbr>" +
                     "</div>" +
                     "<div class='date mmobj'>" +
                         moment(mmobj.record_date).format('YYYY-MM-DD HH:mm:ss') +
