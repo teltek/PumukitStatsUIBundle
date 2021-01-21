@@ -107,21 +107,21 @@
         location.search = "?page="+page_selected;
 
         {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
-        window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page_selected);
+            window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page_selected);
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
-        window.most_viewed_mmobj(data['criteria'], data['from_date'], data['to_date'],page_selected);
+            window.most_viewed_mmobj(data['criteria'], data['from_date'], data['to_date'],page_selected);
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
         var series = "{{ app.request.attributes.get('_route_params')['id'] }}";
-        window.most_viewed_series_by_id(series, data['criteria'], data['from_date'], data['to_date'], page_selected);
+            window.most_viewed_series_by_id(series, data['criteria'], data['from_date'], data['to_date'], page_selected);
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
         var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
-        window.most_viewed_mmobj_by_id(mmobj, data['criteria'], data['from_date'], data['to_date'], page_selected);
+            window.most_viewed_mmobj_by_id(mmobj, data['criteria'], data['from_date'], data['to_date'], page_selected);
         {% endif %}
     });
 
@@ -698,7 +698,7 @@
                 range = [1,'...',page,'...',num];
             }
         }else{
-            range = Array.apply(null,Array(num)).map(function (x, i) { return i+1; });
+            range = Array.apply(null,Array(num)).map(function (x, i) { return i; });
         }
         return range;
     }
@@ -706,8 +706,7 @@
 
     /* Pager for most viewed series/mmobjs */
     window.createPager = function(data) {
-        var count = Math.ceil(data.total / 10);
-        var pages = count - 1;
+        var pages = Math.ceil(data.total / 10);
 
         var active_page = parseInt("{{ app.request.get('page')|default(0) }}");
         var aPages = range(pages,active_page);
@@ -728,14 +727,14 @@
         aPages.forEach(function(element) {
             var htmlPage = '';
             if(element !== '...') {
-                if(element == active_page) {
-                    htmlPage = "<li><a class='change_page' style='background-color:#EAEAEA;' data-value='" + element + "'>" + element + "</a></li>";
+                if(element === active_page) {
+                    htmlPage = "<li><a class='change_page' style='background-color:#EAEAEA;' data-value='" + element + "'>" + (element +1 ) + "</a></li>";
 
                 } else {
-                    htmlPage = "<li><a class='change_page' data-value='" + element + "'>" + element + "</a></li>";
+                    htmlPage = "<li><a class='change_page' data-value='" + element + "'>" + (element +1 )+ "</a></li>";
                 }
             } else {
-                htmlPage = "<li><a>" + element + "</a></li>";
+                htmlPage = "<li><a>" + (element +1 ) + "</a></li>";
             }
             html = html + htmlPage;
         });
