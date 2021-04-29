@@ -761,6 +761,24 @@
                 .showControls(false)
                 .showLegend(false);
 
+            chart.xAxis
+                .tickFormat(function(d) {
+                    d3.select(this)
+                        .attr('style', 'fill:transparent');
+                    if (this) {
+                        d3.select(this.parentNode)
+                            .append("foreignObject")
+                            .attr('x', -175)
+                            .attr('y', -8)
+                            .attr("width", 170)
+                            .attr("height", 50)
+                            .append("xhtml:p")
+                            .attr('style', 'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;font-size:12px')
+                            .html(d);
+                    }
+                    return d;
+                });
+
             chart.yAxis
                 .tickFormat(d3.format('~s'));
 
