@@ -234,7 +234,7 @@
             },
             success: function(response) {
                 var series = response.series;
-                var i = 1;
+                var i = page * 10 + 1;
                 var path = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
                 $('.most-viewed-table-body').html('');
@@ -346,7 +346,7 @@
             },
             success: function(response) {
                 var mmobjs = response.mmobjs;
-                var i = 1;
+                var i = page * 10 + 1;
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
 
                 $('.total-objects').html(response.total);
@@ -403,7 +403,7 @@
             },
             success: function (response) {
                 var mmobj = response.mmobjs[0];
-                var i = 1;
+                var i = page * 10 + 1;
                 var id = "{{ app.request.attributes.get('id') }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.most-viewed-table-body').html(
@@ -547,7 +547,7 @@
             },
             success: function(response) {
                 var mmobjs = response.mmobjs;
-                var i = 1;
+                var i = page * 10 + 1;
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
