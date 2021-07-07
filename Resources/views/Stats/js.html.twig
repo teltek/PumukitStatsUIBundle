@@ -234,7 +234,7 @@
             },
             success: function(response) {
                 var series = response.series;
-                var i = 1;
+                var i = page * 10 + 1;
                 var path = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
                 $('.most-viewed-table-body').html('');
@@ -254,6 +254,18 @@
                     window.getInfoSeries(data.series.id);
                     i = i + 1;
                 });
+                if(series.length < 10) {
+                    for(var i = series.length + 1; i < 11; i++){
+                        $('.most-viewed-table-body').append(
+                            "<tr>" +
+                            "<td headers='ranking'>" + (page * 10 + i) + "</td>" +
+                            "<td headers='title'></td>" +
+                            "<td headers='videos'></td>" +
+                            "<td headers='views'></td>" +
+                            "</tr>"
+                        );
+                    }
+                }
 
                 window.createPager(response);
                 data = window.prepareDataMostViewedSeries(response.series);
@@ -346,7 +358,7 @@
             },
             success: function(response) {
                 var mmobjs = response.mmobjs;
-                var i = 1;
+                var i = page * 10 + 1;
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
 
                 $('.total-objects').html(response.total);
@@ -367,6 +379,19 @@
                     );
                     i = i + 1;
                 });
+
+                if(mmobjs.length < 10) {
+                    for(var i = mmobjs.length + 1; i < 11; i++){
+                        $('.most-viewed-table-body').append(
+                            "<tr>" +
+                            "<td headers='ranking'>" + (page * 10 + i) + "</td>" +
+                            "<td headers='title'></td>" +
+                            "<td headers='videos'></td>" +
+                            "<td headers='views'></td>" +
+                            "</tr>"
+                        );
+                    }
+                }
 
                 window.createPager(response);
                 data = window.prepareDataMostViewedMmobj(response.mmobjs);
@@ -403,7 +428,7 @@
             },
             success: function (response) {
                 var mmobj = response.mmobjs[0];
-                var i = 1;
+                var i = page * 10 + 1;
                 var id = "{{ app.request.attributes.get('id') }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.most-viewed-table-body').html(
@@ -547,7 +572,7 @@
             },
             success: function(response) {
                 var mmobjs = response.mmobjs;
-                var i = 1;
+                var i = page * 10 + 1;
                 var path = "{{ path('pumukit_stats_mmobj_index_id',{'id': '__ID__'}) }}";
                 var url = "{{ path('pumukit_stats_series_index_id',{'id': '__ID__'}) }}";
                 $('.total-objects').html(response.total);
@@ -572,6 +597,20 @@
                     );
                     i = i + 1;
                 });
+
+                if(mmobjs.length < 10) {
+                    for(var i = mmobjs.length + 1; i < 11; i++){
+                        $('.most-viewed-table-body').append(
+                            "<tr>" +
+                            "<td headers='ranking'>" + (page * 10 + i) + "</td>" +
+                            "<td headers='title'></td>" +
+                            "<td headers='recording'></td>" +
+                            "<td headers='series'></td>" +
+                            "<td headers='views'></td>" +
+                            "</tr>"
+                        );
+                    }
+                }
 
                 window.createPager(response);
                 data = window.prepareDataMostViewedMmobj(response.mmobjs);
@@ -716,7 +755,7 @@
         var disabled_previous = '';
         var disabled_next = '';
         if(active_page === 0) { disabled_previous = 'disabled'; }
-        if(active_page === pages) { disabled_next = 'disabled'; }
+        if(active_page === (pages-1)) { disabled_next = 'disabled'; }
 
         var html = "<ul class='pagination'>";
         if(active_page === 0) {
@@ -742,7 +781,7 @@
             html = html + htmlPage;
         });
 
-        if(active_page !== pages) {
+        if(active_page !== (pages-1)) {
             html = html + "<li><a class='change_page' data-value='"+ (active_page +1) +"'>{% trans %}Next{% endtrans %}</a></li></ul></div>";
         } else {
             html = html + "<li class='" + disabled_next + "'><a>{% trans %}Next{% endtrans %}</a></li></ul>";
