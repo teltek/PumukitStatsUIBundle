@@ -1,7 +1,7 @@
 PuMuKIT Stats UI
 ================
 
-Bundle based on [Symfony](http://symfony.com/) to work with the [PuMuKIT2 Video Platform](https://github.com/campusdomar/PuMuKIT2/blob/2.1.x/README.md).
+Bundle based on [Symfony](http://symfony.com/) to work with the [PuMuKIT Video Platform](https://github.com/pumukit/PuMuKIT/#readme).
 
 ![Stats](Resources/data/screenshot.png)
 
@@ -21,17 +21,7 @@ following command to download the latest stable version of this bundle:
 $ composer require teltek/pumukit-stats-ui-bundle dev_master
 ```
 
-
-### Step 2: Install the Bundle
-
-Install the bundle by executing the following line command. This command updates the Kernel to enable the bundle (app/AppKernel.php) and loads the routing (app/config/routing.yml) to add the bundle routes\
-.
-
-```bash
-$ php app/console pumukit:install:bundle Pumukit/StatsUIBundle/PumukitStatsUIBundle
-```
-
-### Step 3: Update assets
+### Step 2: Update assets
 
 ```bash
 $ php app/console cache:clear
