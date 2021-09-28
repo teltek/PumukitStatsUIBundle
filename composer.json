@@ -26,6 +26,5 @@
         "psr-4": {
             "Pumukit\\StatsUIBundle\\": ""
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
