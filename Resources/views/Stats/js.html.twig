@@ -55,7 +55,6 @@
     $('.btn-stats-calendar-remove').on('click', function(event){
         event.preventDefault();
         $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
-        window.initDateRangePicker();
         window.initializeAjaxRequest();
     });
 
@@ -70,7 +69,6 @@
         event.preventDefault();
         $('#title').val('');
         $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
-        window.initDateRangePicker();
         window.initializeAjaxRequest();
     });
 
