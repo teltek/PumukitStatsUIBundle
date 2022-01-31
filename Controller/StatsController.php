@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/stats")
@@ -16,6 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class StatsController extends AbstractController
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/series", name="pumukit_stats_series_index")
      * @Route("/objects", name="pumukit_stats_mmobj_index")
@@ -25,7 +33,6 @@ class StatsController extends AbstractController
     public function indexAction(Request $request): Response
     {
         $routeName = $request->get('_route');
-        $translator = $this->get('translator');
 
         if ('pumukit_stats_series_index' === $routeName) {
             $title = 'General Statistics for Series';
@@ -38,7 +45,7 @@ class StatsController extends AbstractController
         }
 
         return $this->render('@PumukitStatsUI/Stats/index.html.twig', [
-            'template_title' => $translator->trans($title),
+            'template_title' => $this->translator->trans($title),
         ]);
     }
 }
