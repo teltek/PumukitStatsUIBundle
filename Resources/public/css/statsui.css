@@ -210,6 +210,10 @@
     box-shadow:0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
 }
 
+.block-preview table th, .block-preview table tr {
+    word-break: break-all;
+}
+
 .btn-stats-search {
     padding: 8px 10px;
 }
