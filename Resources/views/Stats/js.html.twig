@@ -371,7 +371,7 @@
                         "</a>" +
                         "</td>" +
                         "<td headers='recording'>" + moment(data.mmobj.recordDate).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
-                        "<td headers='series'>" + data.mmobj.series.i18nTitle[locale] + "</td>" +
+                        "<td headers='series'>" + data.mmobj.seriesTitle + "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
                         "</tr>"
                     );
@@ -438,8 +438,8 @@
                     "</td>" +
                     "<td headers='recording'>" + moment(mmobj.recordDate).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                     "<td headers='series'>" +
-                    "<a href='" + url.replace('__ID__', mmobj.series.id) + "'>" +
-                    mmobj.series.i18nTitle[locale] +
+                    "<a href='" + url.replace('__ID__', mmobj.series.split('/').pop()) + "'>" +
+                    mmobj.seriesTitle +
                     "</a>" +
                     "</td>" +
                     "<td headers='views' id='"+ id +"'>" + 0 + "</td>" +
@@ -447,7 +447,7 @@
                 );
                 window.getInfoMmobj(id, from_date, to_date);
                 window.showMmobj(mmobj);
-                $('.title_of_most_viewed').html(mmobj.series.i18nTitle[locale]);
+                $('.title_of_most_viewed').html(mmobj.seriesTitle);
             }
         });
     };
@@ -587,8 +587,8 @@
                         "</td>" +
                         "<td headers='recording'>" + moment(data.mmobj.recordDate).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                         "<td headers='series'>" +
-                        "<a href='" + url.replace('__ID__', data.mmobj.series.id) + "'>" +
-                        data.mmobj.series.i18nTitle[locale] +
+                        "<a href='" + url.replace('__ID__', data.mmobj.series.split('/').pop()) + "'>" +
+                        data.mmobj.seriesTitle +
                         "</a>" +
                         "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
