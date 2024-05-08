@@ -730,13 +730,13 @@
         var range;
         if (num > 6){
             if (page > 3 && page < num-3){
-                range = [1,'...',page-1,page,page+1,'...',num];
+                range = [0,'...',page-1,page,page+1,'...',num];
             }else if (page <= 3){
-                range = [1,2,3,4,'...',num];
+                range = [0,1,2,3,'...',num];
             }else if (page >= num-2){
-                range = [1,'...',num-3,num-2,num-1,num];
+                range = [0,'...',num-3,num-2,num-1,num];
             } else {
-                range = [1,'...',page,'...',num];
+                range = [0,'...',page,'...',num];
             }
         }else{
             range = Array.apply(null,Array(num)).map(function (x, i) { return i; });
@@ -775,7 +775,7 @@
                     htmlPage = "<li><a class='change_page' data-value='" + element + "'>" + (element +1 )+ "</a></li>";
                 }
             } else {
-                htmlPage = "<li><a>" + (element +1 ) + "</a></li>";
+                htmlPage = "<li><a>" + element + "</a></li>";
             }
             html = html + htmlPage;
         });
