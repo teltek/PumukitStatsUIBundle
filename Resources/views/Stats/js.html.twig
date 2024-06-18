@@ -371,7 +371,7 @@
                         "</a>" +
                         "</td>" +
                         "<td headers='recording'>" + moment(data.mmobj.recordDate).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
-                        "<td headers='series'>" + data.mmobj.series.i18nTitle[locale] + "</td>" +
+                        "<td headers='series'>" + data.mmobj.seriesTitle + "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
                         "</tr>"
                     );
@@ -438,8 +438,8 @@
                     "</td>" +
                     "<td headers='recording'>" + moment(mmobj.recordDate).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                     "<td headers='series'>" +
-                    "<a href='" + url.replace('__ID__', mmobj.series.id) + "'>" +
-                    mmobj.series.i18nTitle[locale] +
+                    "<a href='" + url.replace('__ID__', mmobj.series.split('/').pop()) + "'>" +
+                    mmobj.seriesTitle +
                     "</a>" +
                     "</td>" +
                     "<td headers='views' id='"+ id +"'>" + 0 + "</td>" +
@@ -447,7 +447,7 @@
                 );
                 window.getInfoMmobj(id, from_date, to_date);
                 window.showMmobj(mmobj);
-                $('.title_of_most_viewed').html(mmobj.series.i18nTitle[locale]);
+                $('.title_of_most_viewed').html(mmobj.seriesTitle);
             }
         });
     };
@@ -587,8 +587,8 @@
                         "</td>" +
                         "<td headers='recording'>" + moment(data.mmobj.recordDate).format('YYYY-MM-DD HH:mm:ss') + "</td>" +
                         "<td headers='series'>" +
-                        "<a href='" + url.replace('__ID__', data.mmobj.series.id) + "'>" +
-                        data.mmobj.series.i18nTitle[locale] +
+                        "<a href='" + url.replace('__ID__', data.mmobj.series.split('/').pop()) + "'>" +
+                        data.mmobj.seriesTitle +
                         "</a>" +
                         "</td>" +
                         "<td headers='views'>" + data.num_viewed + "</td>" +
@@ -730,13 +730,13 @@
         var range;
         if (num > 6){
             if (page > 3 && page < num-3){
-                range = [1,'...',page-1,page,page+1,'...',num];
+                range = [0,'...',page-1,page,page+1,'...',num-1];
             }else if (page <= 3){
-                range = [1,2,3,4,'...',num];
-            }else if (page >= num-2){
-                range = [1,'...',num-3,num-2,num-1,num];
+                range = [0,1,2,3,4,'...',num-1];
+            }else if (page >= num-3){
+                range = [0,'...',num-3,num-2,num-1];
             } else {
-                range = [1,'...',page,'...',num];
+                range = [0,'...',page,'...',num-1];
             }
         }else{
             range = Array.apply(null,Array(num)).map(function (x, i) { return i; });
@@ -775,7 +775,7 @@
                     htmlPage = "<li><a class='change_page' data-value='" + element + "'>" + (element +1 )+ "</a></li>";
                 }
             } else {
-                htmlPage = "<li><a>" + (element +1 ) + "</a></li>";
+                htmlPage = "<li><a>" + element + "</a></li>";
             }
             html = html + htmlPage;
         });
