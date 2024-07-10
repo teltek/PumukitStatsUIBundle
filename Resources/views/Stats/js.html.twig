@@ -61,8 +61,7 @@
     $('.btn-stats-search-remove').on('click', function(event){
         event.preventDefault();
         $('#title').val('');
-        var data = window.prepareSearch();
-        window.getAjaxRequest(data);
+        window.initializeAjaxRequest();
     });
 
     $('.btn-reset-filter').on('click',function(event) {
@@ -172,25 +171,25 @@
 
     window.initializeAjaxRequest = function() {
         {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
-            window.most_viewed_series(null,null,page);
-            window.views(null, null,null,page, 'month');
+            window.most_viewed_series(null,null,null,0);
+            window.views(null, null,null,0, 'month');
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index' %}
-            window.most_viewed_mmobj(null,null,page);
-            window.views(null,null,null,page, 'month');
+            window.most_viewed_mmobj(null,null,null, 0);
+            window.views(null,null,null,0,'month');
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_series_index_id' %}
             var series = "{{ app.request.attributes.get('_route_params')['id'] }}";
-            window.most_viewed_series_by_id(series,null, null, null, page);
-            window.views_series(series,null, null,null, page, 'month');
+            window.most_viewed_series_by_id(series,null, null, null, 0);
+            window.views_series(series,null, null,null, 0, 'month');
         {% endif %}
 
         {% if app.request.get('_route') == 'pumukit_stats_mmobj_index_id' %}
             var mmobj = "{{ app.request.attributes.get('_route_params')['id'] }}";
-            window.most_viewed_mmobj_by_id(mmobj, null, null, null, page);
-            window.views_mmobj(mmobj,null, null, null, page, 'month');
+            window.most_viewed_mmobj_by_id(mmobj, null, null, null, 0);
+            window.views_mmobj(mmobj,null, null, null, 0, 'month');
         {% endif %}
     };
 
@@ -333,7 +332,7 @@
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
-            page = data['page'];
+            page = (page == 0) ? page : data['page'];
         }
 
         var url = "{{ path('pumukit_stats_api_mmobjmostviewed') }}";
@@ -404,7 +403,7 @@
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
-            page = data['page'];
+            page = (page == 0) ? page : data['page'];
         }
 
         var url = "{{ path('pumukit_schema_api_multimediaobjects') }}";
@@ -457,7 +456,7 @@
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
-            page = data['page'];
+            page = (page == 0) ? page : data['page'];
             group_by = data['group_by'];
         }
 
@@ -479,7 +478,7 @@
             },
             success: function(response) {
                 var objects = response.views;
-                var total = 1;
+                var total = 0;
                 $('.views-table-body').html('');
                 objects.forEach(function(data) {
                     total = total + data.numView;
@@ -527,7 +526,7 @@
             },
             success: function(response) {
                 var objects = response.views;
-                var total = 1;
+                var total = 0;
                 $('.views-table-body').html('');
                 objects.forEach(function(data) {
                     total = total + data.numView;
@@ -539,6 +538,7 @@
                         "</tr>"
                     );
                 });
+                console.log(total);
                 $('.total-views-objects').html(total);
                 $('#foot-views').html(total);
 
@@ -553,13 +553,14 @@
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
-            page = data['page'];
+            page = (page == 0) ? page : data['page'];
         }
 
         var url = "{{ path('pumukit_stats_api_mmobjmostviewed') }}";
         if(criteria != null && criteria !==  '') {
             url = url + "?criteria[$text][$search]=" + criteria;
         }
+
         $.ajax({
             url: url,
             type: 'GET',
@@ -623,7 +624,7 @@
             var data = window.defaultAjaxValues();
             from_date = data['from_date'];
             to_date = data['to_date'];
-            page = data['page'];
+            page = (page == 0) ? page : data['page'];
             group_by = data['group_by'];
         }
 
@@ -749,7 +750,7 @@
     window.createPager = function(data) {
         var pages = Math.ceil(data.total / 10);
 
-        var active_page = parseInt("{{ app.request.get('page')|default(0) }}");
+        var active_page = data.page == 0 ? data.page : parseInt("{{ app.request.get('page')|default(0) }}");
         var aPages = range(pages,active_page);
         var disabled_previous = '';
         var disabled_next = '';
