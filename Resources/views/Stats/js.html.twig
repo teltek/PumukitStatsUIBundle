@@ -54,21 +54,17 @@
 
     $('.btn-stats-calendar-remove').on('click', function(event){
         event.preventDefault();
-        $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
-        window.initializeAjaxRequest();
+        window.location = window.location.href.split("?")[0];
     });
 
     $('.btn-stats-search-remove').on('click', function(event){
         event.preventDefault();
-        $('#title').val('');
-        window.initializeAjaxRequest();
+        window.location = window.location.href.split("?")[0];
     });
 
     $('.btn-reset-filter').on('click',function(event) {
         event.preventDefault();
-        $('#title').val('');
-        $('#form_daterangepicker').val(moment().startOf('year').format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
-        window.initializeAjaxRequest();
+        window.location = window.location.href.split("?")[0];
     });
 
     $('.ripple-wrapper').on('click', function(event) {
@@ -538,7 +534,7 @@
                         "</tr>"
                     );
                 });
-                console.log(total);
+
                 $('.total-views-objects').html(total);
                 $('#foot-views').html(total);
 
