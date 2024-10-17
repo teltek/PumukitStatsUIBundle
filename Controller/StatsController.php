@@ -13,6 +13,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/stats")
+ *
  * @Security("is_granted('ROLE_ACCESS_STATS')")
  */
 class StatsController extends AbstractController
