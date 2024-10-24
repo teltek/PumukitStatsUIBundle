@@ -77,6 +77,10 @@
 
     $('.btn-stats-search-text').on('click', function(event) {
         event.preventDefault();
+        page = 0;
+        var url = new URL(window.location.href);
+        url.searchParams.set('page', page);
+        window.history.pushState({}, '', url);
         var data = window.prepareSearch();
         window.getAjaxRequest(data);
     });
@@ -100,7 +104,10 @@
 
         var data = window.prepareSearch();
         var page_selected = $(this).data('value');
-        location.search = "?page="+page_selected;
+
+        var url = new URL(window.location.href);
+        url.searchParams.set('page', page_selected);
+        window.history.pushState({}, '', url);
 
         {% if app.request.get('_route') == 'pumukit_stats_series_index' %}
             window.most_viewed_series(data['criteria'], data['from_date'], data['to_date'], page_selected);
@@ -746,7 +753,7 @@
     window.createPager = function(data) {
         var pages = Math.ceil(data.total / 10);
 
-        var active_page = data.page == 0 ? data.page : parseInt("{{ app.request.get('page')|default(0) }}");
+        var active_page = data.page;
         var aPages = range(pages,active_page);
         var disabled_previous = '';
         var disabled_next = '';
